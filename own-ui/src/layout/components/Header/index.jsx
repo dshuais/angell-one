@@ -22,7 +22,7 @@ export default function Header(props) {
         console.log(key)
         break
       case 'remove':
-        message.success('退出成功')
+        message.success('exit successful')
         removeToken()
         removeInfoAction()
         navigate('/login', { replace: true })
@@ -33,7 +33,7 @@ export default function Header(props) {
   }
 
   const handleFullScreen = () => {
-    if (!screenfull.isEnabled) return message.warning('你的浏览器不支持全屏')
+    if (!screenfull.isEnabled) return message.warning('Your browser does not support full screen')
     screenfull.toggle()
     setScreen(screen => !screen)
   }
@@ -71,7 +71,7 @@ export default function Header(props) {
         {
           tarList.map(tar => (
             <Tooltip title={tar.title} key={tar.id}>
-              <a className='c-333 fons-20 mr10' target='_blank' href={tar.href}>{tar.icon}</a>
+              <a className='c-333 fons-20 mr10' target='_blank' rel='noreferrer' href={tar.href}>{tar.icon}</a>
             </Tooltip>
           ))
         }

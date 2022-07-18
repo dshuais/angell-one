@@ -1,42 +1,30 @@
 module.exports = {
   // public
-  publicHandleError: {
-    code: '10000',
-    msg: '操作失败'
-  },
-  publicQueryError: {
-    code: 400,
-    msg: '参数不符合规范'
-  },
-
+  publicHandleError: { code: 500, msg: '操作失败' },
+  publicQueryError: { code: 400, msg: '参数不符合规范' },
+  // 权限相关
+  userAuthError: { code: 404, msg: '没有权限' },
+  tokenOverError: { code: 401, msg: 'token已过期' },
+  tokenInvalidError: { code: 401, msg: '无效的token' },
   // 用户相关
+  userNotError: { code: 400, msg: '用户不存在' },
+  userLoginError: { code: 500, msg: '登陆失败' },
+  userPasswordError: { code: 400, msg: '密码错误' },
+  userAlreadyExited: { code: 400, msg: '用户已存在' },
+  userRegisterError: { code: 500, msg: '注册失败' },
+  userStatusError: { code: 400, msg: '当前用户已被禁用' },
+  userGetUserInfoError: { code: 500, msg: '获取用户信息失败' },
+  userChangePwdError: { code: 500, msg: '修改失败' },
+  changePwdError: { code: 400, msg: '旧密码错误' },
+  equalPwdError: { code: 400, msg: '新密码与旧密码相同' },
+  userUpdateError: { code: 500, msg: '修改用户信息失败' },
+
+
+
+
   userFormateError: {
     code: 400,
     msg: '用户名或密码为空'
-  },
-  userAlreadyExited: {
-    code: 400,
-    msg: '用户已存在'
-  },
-  userRegisterError: {
-    code: '10003',
-    msg: '注册失败'
-  },
-  userNotError: {
-    code: 400,
-    msg: '用户不存在'
-  },
-  userLoginError: {
-    code: '10005',
-    msg: '登陆失败'
-  },
-  userPasswordError: {
-    code: 400,
-    msg: '密码错误'
-  },
-  userGetUserInfoError: {
-    code: '10007',
-    msg: '获取用户信息失败'
   },
   userGetUserNameError: {
     code: 400,
@@ -46,10 +34,7 @@ module.exports = {
     code: 400,
     msg: '旧密码或新密码为空'
   },
-  userChangePwdError: {
-    code: '10012',
-    msg: '修改失败'
-  },
+
 
   // 商品相关
   createGoodError: {
@@ -163,17 +148,5 @@ module.exports = {
     msg: '文件类型不符合规范'
   },
 
-  // 权限相关
-  userAuthError: {
-    code: '10100',
-    msg: '没有权限'
-  },
-  tokenOverError: {
-    code: '10101',
-    msg: 'token已过期'
-  },
-  tokenInvalidError: {
-    code: '10102',
-    msg: '无效的token'
-  }
+
 }

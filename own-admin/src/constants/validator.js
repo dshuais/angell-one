@@ -23,7 +23,7 @@ const validator = async (ctx, data) => {
     return void 0
   } catch (err) {
     const error = err.errors[0]
-    return { code: '10200', msg: error.field + ' is ' + error.message }
+    return { code: 400, msg: error.field + ' is ' + error.message }
   }
 }
 

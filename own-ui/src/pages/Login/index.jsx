@@ -16,14 +16,18 @@ function Login(props) {
   // const [user, setUser] = useState({ username: 'dushuai', password: '123456' })
 
   const onFinish = async values => {
-    const { token } = await userLogin(values)
-    // if (code === 1) return message.error(msg)
-    setToken(token)
-    message.success('登陆成功')
-    props.getUserInfo()
-    // setToken(data['cms-token'])
-    // props.userInfoAction(data)
-    navigate('/')
+    try {
+      const { token } = await userLogin(values)
+      // if (code === 1) return message.error(msg)
+      setToken(token)
+      message.success('login successful')
+      props.getUserInfo()
+      // setToken(data['cms-token'])
+      // props.userInfoAction(data)
+      navigate('/')
+    } catch {
+      console.error('login error')
+    }
   }
 
 
