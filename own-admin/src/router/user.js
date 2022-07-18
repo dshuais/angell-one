@@ -1,9 +1,10 @@
 const Router = require('koa-router')
 const router = new Router() // new Router({prefix: '/user'}) 也可以在这里添加请求头
-const { register, login, userinfo, changePwd, resetPassword, getUserInfo, } = require('../controller/user.controller')
-const { userValidator, verifyUser, bcryptPassword, verifyLogin, userinfoDBSQL, verifyOldNewPwd,
-  verifyResetPwd, } = require('../middleware/user.middleware')
-const { auth } = require('../middleware/auth.middleware')
+const { register, login, userinfo, changePwd, resetPassword, getUserInfo, updateUserInfo, } = require('../controller/user.controller')
+const { userValidator, verifyUser, verifyLogin, userinfoDBSQL, verifyOldNewPwd, pwdValidator,
+  verifyResetPwd, } = require('../middleware/user.middleware'),
+  { auth, hadAdminPermission } = require('../middleware/auth.middleware'),
+  { bcryptPassword } = require('../middleware/bcrypt')
 
 // 注册
 router.post('/register', userValidator, verifyUser, bcryptPassword, register)
@@ -12,10 +13,14 @@ router.post('/login', userValidator, verifyLogin, login)
 // 获取用户信息
 router.get('/info', auth, getUserInfo)
 // 修改密码
-router.patch('/changepwd', auth, verifyOldNewPwd, bcryptPassword, changePwd)
+router.patch('/changepwd', auth, pwdValidator, verifyOldNewPwd, bcryptPassword, changePwd)
+// 修改用户信息
+router.put('/update', auth, updateUserInfo)
 // 重置密码
-router.post('/resetpwd', auth, verifyResetPwd, bcryptPassword, resetPassword)
-// 获取用户信息 db+sql
+router.post('/resetpwd', auth, hadAdminPermission, verifyResetPwd, bcryptPassword, resetPassword)
+
+
+// 获取用户信息 db+sql -- 弃用 不用管
 router.post('/userinfo', userinfoDBSQL, userinfo)
 
 

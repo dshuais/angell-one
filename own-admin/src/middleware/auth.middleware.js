@@ -5,6 +5,7 @@ const { tokenOverError, tokenInvalidError, userAuthError, } = require('../consta
 // 解析token
 const auth = async (ctx, next) => {
   const { authorization } = ctx.request.header
+  if (!authorization) return ctx.app.emit('error', tokenInvalidError, ctx)
   const token = authorization.replace('Bearer ', '')
   // console.log(token)
   try {
@@ -17,6 +18,9 @@ const auth = async (ctx, next) => {
         return ctx.app.emit('error', tokenOverError, ctx)
       case 'JsonWebTokenError':
         console.error('无效的token', err)
+        return ctx.app.emit('error', tokenInvalidError, ctx)
+      default:
+        console.error('token解析失败', err)
         return ctx.app.emit('error', tokenInvalidError, ctx)
     }
   }

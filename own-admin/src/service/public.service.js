@@ -116,12 +116,13 @@ const getDataInfo2 = async (tablename, where, files = '*') => {
   let sql = `select ${files} from ${tablename}`, whereList = ''
   if (where) {
     for (let ww in where) {
-      whereList += ` ${ww} = ${where[ww]} and`
+      whereList += ` ${ww} = '${where[ww]}' and`
     }
   }
   where ? sql += ` where ${whereList.slice(0, whereList.lastIndexOf(' and'))}` : void 0
   return await db.query(sql)
 }
+
 
 /**
  * 查询语句 查询数据列表 -- 不再维护

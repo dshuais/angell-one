@@ -2,7 +2,7 @@ const fs = require('fs')
 const Router = require('koa-router')
 // const userRouter = require('./user')
 // const goodsRouter = require('./goods')
-const router = new Router({prefix: '/api'})
+const router = new Router({ prefix: '/api' })
 
 router.get('/', async (ctx) => {
   ctx.render('index')
@@ -14,7 +14,7 @@ router.get('/', async (ctx) => {
 
 // node内fs模块的readdirSync方法可以拿到指定文件夹下的所有文件 再统一挂载
 fs.readdirSync(__dirname).forEach(file => {
-  if (file !== 'index.js') {
+  if (!['index.js', 'goods.js', 'order.js', 'cart.js', 'address.js'].includes(file)) {
     let r = require('./' + file)
     router.use(`/${file.split('.')[0]}`, r.routes(), r.allowedMethods())
   }
