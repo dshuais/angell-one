@@ -3,7 +3,7 @@ const { getUserInfo, userinfo, updateById, } = require('../service/user.service'
   { getDataInfo2 } = require('../service/public.service')
 const { userFormateError, userAlreadyExited, userRegisterError,
   userNotError, userLoginError, userPasswordError, userGetUserNameError, userOldNewPwdError, changePwdError,
-  userChangePwdError, userAuthError, userStatusError, equalPwdError, } = require('../constants/err.type')
+  userChangePwdError, userAuthError, userStatusError, equalPwdError, captchaError, } = require('../constants/err.type')
 const { DEFAULT_PASSWORD } = process.env
 
 const tablename = 'own_users'
@@ -16,13 +16,14 @@ const userValidator = async (ctx, next) => { // 验证用户输入用户名和�
   //   ctx.app.emit('error', userFormateError, ctx)
   //   return
   // }
-  const vali = [{ username: ['string'] }, { password: ['string'] }], vv = await validator(ctx, vali)
+  const vali = [{ username: ['string'] }, { password: ['string'] }, { captcha: ['string'] }], vv = await validator(ctx, vali)
   if (vv) return ctx.app.emit('error', vv, ctx)
   await next()
 }
 
 const verifyLogin = async (ctx, next) => { // 用户登陆的验证中间件
-  const { username, password } = ctx.request.body
+  const { username, password, captcha } = ctx.request.body
+  if (captcha != ctx.session.captcha) return ctx.app.emit('error', captchaError, ctx)
   let res
   try {
     res = await getDataInfo2(tablename, { username }, 'id,username,status,role,password') // 查询当前登陆的用户 有的话就判断密码 没有就报错

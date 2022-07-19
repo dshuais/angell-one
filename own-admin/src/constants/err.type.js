@@ -7,6 +7,7 @@ module.exports = {
   tokenOverError: { code: 401, msg: 'token已过期' },
   tokenInvalidError: { code: 401, msg: '无效的token' },
   // 用户相关
+  captchaError: { code: 400, msg: '验证码不正确' },
   userNotError: { code: 400, msg: '用户不存在' },
   userLoginError: { code: 500, msg: '登陆失败' },
   userPasswordError: { code: 400, msg: '密码错误' },

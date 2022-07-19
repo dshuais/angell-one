@@ -16,4 +16,28 @@ function myFixed(num, digit) {
   return (Math.round((num + Number.EPSILON) * Math.pow(10, digit)) / Math.pow(10, digit)).toFixed(digit)
 }
 
-module.exports = myFixed
+/**
+ * 生成随机数
+ * @param min 随机数的最小范围
+ * @param max 随机数的最大范围
+*/
+function randomNum(min, max) {
+  const num = Math.floor(Math.random() * (max - min) + min)
+  return num
+}
+
+/**
+ * 通过生成随机数 生成随机rgb颜色值
+ * @param min 随机rgb颜色值的最小范围
+ * @param max 随机rgb颜色值的最大范围
+*/
+function randomColor(min, max) {
+  const r = randomNum(min, max)
+  const g = randomNum(min, max)
+  const b = randomNum(min, max)
+  return `rgb(${r},${g},${b})`
+}
+
+module.exports = {
+  myFixed, randomNum, randomColor,
+}
