@@ -1,7 +1,7 @@
 const { createOrderError, getOrderListError, removeOrderError, getOrderError, updateOrderStaError, publicQueryError, } = require('../constants/err.type'),
   { addData, getDataInfo, getLikeDataList, manyQueryTotal, getDataInfo2, removeData2, updateData, } = require('../service/public.service'),
   { getCartList, getCartsInfo, } = require('../service/order.service'),
-  myFixed = require('../constants/countmonry')
+  { myFixed } = require('../constants/utils')
 
 
 const tablename = 'koa_order'

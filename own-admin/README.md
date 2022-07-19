@@ -1,6 +1,6 @@
 ## koa
 使用koa框架搭建server
-
+建议使用npm安装配置，本地启动:npm run dev，部署之后在服务端使用npm run start启动即可
 
 ### .env
 全局环境变量

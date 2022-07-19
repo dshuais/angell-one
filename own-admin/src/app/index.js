@@ -6,6 +6,8 @@ const parameter = require('koa-parameter') // 引入进行表单验证的插件
 const error = require('koa-json-error')
 const cors = require('koa2-cors')
 const { historyApiFallback } = require('koa2-connect-history-api-fallback') // 解决history模式下刷寻not found的问题
+const Koa_session = require('koa-session') // 导入session缓存
+const { sessionConfig } = require('../config/config') // 引入session的配置
 const router = require('../router/')
 const errHandler = require('./errHandler')
 const app = new Koa() // new一个实例对象
@@ -45,6 +47,11 @@ app.use(cors({ // node内解决跨域
 */
 
 
+// session实例化
+app.keys = ['some secret hurr']
+const session = Koa_session(sessionConfig, app)
+app.use(session)
+
 app.use(KoaBody()) // 解析传参body的中间件 这个中间件可开启上传
 // app.use(KoaBody({
 //   multipart: true, // 开启上传
@@ -54,9 +61,10 @@ app.use(KoaBody()) // 解析传参body的中间件 这个中间件可开启上�
 //     keepExtensions: true, // 保留扩展名
 //   }
 // }))
+
 app.use(historyApiFallback({ whiteList: ['/api'] })) // 必须挂载在暴露静态资源的前面 whiteList白名单 让带了前缀的get请求都不要指向index.html
 app.use(KoaStatic(path.join(__dirname, '../../../uploads'))) // 默认暴露的静态资源
-app.use(KoaStatic(path.join(__dirname, '../../../dushuai_koa2_server.com'))) // 默认暴露的静态资源 前端项目
+app.use(KoaStatic(path.join(__dirname, '../../../own.dshuais.com'))) // 默认暴露的静态资源 前端项目
 app.use(parameter(app)) // 挂载parameter 表单验证中间件 他会向ctx上添加一个ctx.verifyParams()的方法 在里面进行校验
 
 app.use(router.routes()).use(router.allowedMethods()) // 统一加载接口路由
