@@ -1,6 +1,9 @@
 import axios from "axios"
-import { message, notification } from 'antd'
-import { getToken } from '../utils/auth'
+import { message, notification, Modal } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { getToken, removeToken } from '../utils/auth'
+import { local } from '../utils/cache'
+import { DS_REACT_USERINFO } from '../redux/constant'
 
 axios.defaults.headers['Conntent-Type'] = 'application/json;charset=utf-8'
 
@@ -27,7 +30,22 @@ service.interceptors.response.use(response => {
     return response.data
   }
 
-  if (code == 500 || code == 400) {
+  if (code === 401) {
+    Modal.confirm({
+      title: 'Confirm logout',
+      icon: <ExclamationCircleOutlined />,
+      content: 'You have been logged out, you can cancel to stay on this page, or log in again',
+      okText: 'Re-Login',
+      cancelText: 'Cancel',
+      onOk() {
+        removeToken()
+        local.remove(DS_REACT_USERINFO)
+        window.location.reload()
+      },
+      onCancel() { }
+    })
+    return Promise.reject(new Error(msg || 'Error'))
+  } else if ([400, 500].includes(code)) {
     message.error(msg)
   } else if (code !== 200) {
     notification.error({ message: msg })

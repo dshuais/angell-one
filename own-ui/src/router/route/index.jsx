@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { Routes, Navigate, useLocation, BrowserRouter } from 'react-router-dom'
+import nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
 import routes from '..'
 import { getToken, removeToken } from '../../utils/auth'
 import { local } from '../../utils/cache'
@@ -30,32 +32,45 @@ export default function MainRouter({ children }) {
     currentRoute = currPath(routes).find(route => route.path === pathname)
 
   useEffect(() => {
-    // console.log('return', currentRoute, getToken())
-  }, [pathname])
+    // console.log('将要在这里加载路由')
+  }, [])
+
+  nprogress.start()
 
   if (getToken()) {
     if (pathname === '/login') {
       // return <Route path='/' element={<Navigate to='/' />} />
+      nprogress.done()
       return <Navigate to='/' />
     } else {
-      if (currentRoute) return children
-      // return <Navigate to={currentRoute.path} />
-      // return <Route path={pathname} element={currentRoute.element} />
-      else return <Navigate to='/404' />
-      // return <Route path='/login' element={<Navigate to='/login' />} />
+      if (currentRoute) {
+        nprogress.done()
+        return children
+      } else {
+        nprogress.done()
+        // return <Navigate to={currentRoute.path} />
+        // return <Route path={pathname} element={currentRoute.element} />
+        return <Navigate to='/404' />
+        // return <Route path='/login' element={<Navigate to='/login' />} />
+      }
     }
   } else {
     if (currentRoute) {
-      if (whiteRoute.includes(pathname)) return children
+      if (whiteRoute.includes(pathname)) {
+        nprogress.done()
+        return children
+      }
       // return <Navigate to={currentRoute.path} />
       // return <Route path={pathname} element={currentRoute.element} />
       else {
+        nprogress.done()
         removeToken()
         local.remove(DS_REACT_USERINFO)
         return <Navigate to='/login' />
       }
       // return <Route path='/login' element={<Navigate to='/login' />} />
     }
+    nprogress.done()
     // return <Route path='/login' element={<Navigate to='/login' />} />
     return <Navigate to='/login' />
   }

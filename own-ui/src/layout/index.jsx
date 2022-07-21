@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { removeInfoAction } from '../redux/actions/user'
@@ -14,6 +14,10 @@ function Layout2(props) {
   const { user, removeInfoAction } = props
 
   const [collapsed, setCollapsed] = useState(false)
+
+  useEffect(() => {
+    console.log('将要在这里加载路由')
+  }, [])
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed)

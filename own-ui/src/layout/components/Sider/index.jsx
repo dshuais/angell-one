@@ -25,22 +25,6 @@ export default function Aside(props) {
     getItem('Article List', 'list', <ReadOutlined />),
     getItem('Article Edit', 'edit', <EditOutlined />),
     getItem('Modify Data', 'means', <FrownOutlined />),
-    // getItem('Home', '', <HomeOutlined />),
-    // getItem('Article List', 'list', <ReadOutlined />),
-    // getItem('Article Edit', 'edit', <EditOutlined />),
-    // getItem('Modify Data', 'means', <FrownOutlined />),
-    // getItem('Home', '', <HomeOutlined />),
-    // getItem('Article List', 'list', <ReadOutlined />),
-    // getItem('Article Edit', 'edit', <EditOutlined />),
-    // getItem('Modify Data', 'means', <FrownOutlined />),
-    // getItem('Home', '', <HomeOutlined />),
-    // getItem('Article List', 'list', <ReadOutlined />),
-    // getItem('Article Edit', 'edit', <EditOutlined />),
-    // getItem('Modify Data', 'means', <FrownOutlined />),
-    // getItem('Home', '', <HomeOutlined />),
-    // getItem('Article List', 'list', <ReadOutlined />),
-    // getItem('Article Edit', 'edit', <EditOutlined />),
-    // getItem('Modify Data', 'means', <FrownOutlined />),
   ]
 
   const { pathname } = useLocation(), navigate = useNavigate(), { collapsed, toggleCollapsed } = props
