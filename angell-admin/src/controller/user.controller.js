@@ -4,10 +4,12 @@ const { userRegisterError, userLoginError, userGetUserInfoError, userNotError, u
   userUpdateError, } = require('../constants/err.type')
 // const { TOKEN_SECRETKEY } = require('../config/config.default')
 const { TOKEN_SECRETKEY } = process.env,
-  { getDataInfo2, addData, updateData } = require('../service/public.service')
+  { getDataInfo2, addData, updateData, getDataInfo3 } = require('../service/public.service'),
+  { pinyin } = require('pinyin-pro')
 
 
-const tablename = 'own_users'
+
+const tablename = 'angell_users'
 
 // 处理路由接口的方法
 class userController {
@@ -99,6 +101,42 @@ class userController {
       ctx.app.emit('error', userUpdateError, ctx)
     }
   }
+
+
+  // 微信登陆
+  async wxLogin(ctx) {
+    const { password, isLogin } = ctx.request.body
+    let { userinfo } = ctx.request.body
+    try {
+      let tokeninfo = {}
+      if (isLogin) {
+        const { id, openid, username, status, role } = userinfo
+        tokeninfo = { id, openid, username, status, role }
+      } else {
+        let nick = userinfo.nickName, reg = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/g, flag = reg.test(nick)
+        if (!flag) nick = 'angellone'
+        else nick = nick.slice(0, 2)
+        const name = pinyin(nick, { toneType: 'none', v: true }).replace(/\s+/g, '') + (Date.now() + '').slice(-5),
+          res = await addData(tablename, { ...userinfo, username: name, password })
+        if (res[0].affectedRows != 1) return ctx.app.emit('error', userLoginError, ctx)
+        const info = await getDataInfo3(tablename, { openid: userinfo.openid })
+        userinfo = info[0][0]
+        const { id, openid, username, status, role } = userinfo
+        tokeninfo = { id, openid, username, status, role }
+      }
+      const token = jwt.sign(tokeninfo, TOKEN_SECRETKEY, { expiresIn: '10h' }), // 生成token
+        { password: a, ...data } = userinfo // 去除密码
+      ctx.body = { code: 200, msg: '登陆成功', data, token }
+    } catch (err) {
+      console.error('创建用户失败', err)
+      ctx.app.emit('error', userLoginError, ctx)
+    }
+  }
+
+  async updateAvatar(ctx) { // 修改用户头像
+    ctx.body = { code: 200, msg: '修改成功' }
+  }
+
 }
 
 module.exports = new userController()

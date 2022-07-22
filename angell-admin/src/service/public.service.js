@@ -122,6 +122,17 @@ const getDataInfo2 = async (tablename, where, files = '*') => {
   where ? sql += ` where ${whereList.slice(0, whereList.lastIndexOf(' and'))}` : void 0
   return await db.query(sql)
 }
+// 优化查询只查询一条的时候写定 limit = 1
+const getDataInfo3 = async (tablename, where, files = '*') => {
+  let sql = `select ${files} from ${tablename}`, whereList = ''
+  if (where) {
+    for (let ww in where) {
+      whereList += ` ${ww} = '${where[ww]}' and`
+    }
+  }
+  where ? sql += ` where ${whereList.slice(0, whereList.lastIndexOf(' and'))} limit 1` : void 0
+  return await db.query(sql)
+}
 
 
 /**
@@ -246,5 +257,6 @@ module.exports = {
   addData, // 增
   removeData, removeData2, // 删
   updateData,// 改
-  getDataInfo, getDataInfo2, getDataList, getTotal, getDataLike, getLikeDataList, manyQueryTotal // 查
+  getDataInfo, getDataInfo2, getDataList, getTotal, getDataLike, getLikeDataList, manyQueryTotal, getDataInfo3,
+  // 查
 }

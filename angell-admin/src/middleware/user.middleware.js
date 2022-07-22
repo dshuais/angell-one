@@ -1,12 +1,14 @@
 const bcrypt = require('bcryptjs'), { validator } = require('../constants/validator')
 const { getUserInfo, userinfo, updateById, } = require('../service/user.service'),
-  { getDataInfo2 } = require('../service/public.service')
+  { getDataInfo2, getDataInfo3 } = require('../service/public.service')
 const { userFormateError, userAlreadyExited, userRegisterError,
   userNotError, userLoginError, userPasswordError, userGetUserNameError, userOldNewPwdError, changePwdError,
-  userChangePwdError, userAuthError, userStatusError, equalPwdError, captchaError, } = require('../constants/err.type')
-const { DEFAULT_PASSWORD } = process.env
+  userChangePwdError, userAuthError, userStatusError, equalPwdError, captchaError, userLoginCodeError,
+} = require('../constants/err.type')
+const { DEFAULT_PASSWORD } = process.env, { http } = require('../constants/utils'),
+  { wx } = require('../config/config'), WXBizDataCrypt = require('../config/WXBizDataCrypt')
 
-const tablename = 'own_users'
+const tablename = 'angell_users'
 
 // user 用户接口使用的中间件验证
 const userValidator = async (ctx, next) => { // 验证用户输入用户名和密码
@@ -26,7 +28,7 @@ const verifyLogin = async (ctx, next) => { // 用户登陆的验证中间件
   if (captcha != ctx.session.captcha) return ctx.app.emit('error', captchaError, ctx)
   let res
   try {
-    res = await getDataInfo2(tablename, { username }, 'id,username,status,role,password') // 查询当前登陆的用户 有的话就判断密码 没有就报错
+    res = await getDataInfo2(tablename, { username }, 'id,openid,username,status,role,password') // 查询当前登陆的用户 有的话就判断密码 没有就报错
     if (!res[0].length) return ctx.app.emit('error', userNotError, ctx)
     // if (!res) return ctx.body = userNotError
   } catch (err) {
@@ -87,12 +89,53 @@ const verifyResetPwd = async (ctx, next) => { // 重置密码验证
   await next()
 }
 
+const wxloginValidator = async (ctx, next) => { // 微信登陆字段验证
+  const vali = [{ code: ['string'] }, { iv: ['string'] }, { encryptedData: ['string'] }], vv = await validator(ctx, vali)
+  if (vv) return ctx.app.emit('error', vv, ctx)
+  await next()
+}
 
+const wxSessionKey = async (ctx, next) => { // 微信登陆 解析用户session_key和openid的中间件
+  const { code } = ctx.request.body
+  try {
+    const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${wx.APP_ID}&secret=${wx.APP_SECRET}&js_code=${code}&grant_type=authorization_code`
+    const { session_key, openid } = await http.request(url, 'get', {})
+    if (!session_key || !openid) return ctx.app.emit('error', userLoginCodeError, ctx)
+    ctx.request.key = { session_key, openid } // 把session和openid放在中间件key上 下一个中间件使用
+  } catch (err) {
+    console.error('解析失败', err)
+    return ctx.app.emit('error', userLoginError, ctx)
+  }
+  await next()
+}
+
+const wxGetuserinfo = async (ctx, next) => { // 通过openid查询表中是否有该用户
+  const { session_key, openid } = ctx.request.key, { iv, encryptedData } = ctx.request.body
+  try {
+    const user = await getDataInfo3(tablename, { openid })
+    if (user[0].length) {
+      ctx.request.body.isLogin = true
+      ctx.request.body.userinfo = user[0][0]
+    } else {
+      const pc = new WXBizDataCrypt(wx.APP_ID, session_key),
+        data = pc.decryptData(encryptedData, iv)
+      data.avatar = data.avatarUrl
+      data.openid = openid
+      const { watermark, language, avatarUrl, ...info } = data
+      ctx.request.body.userinfo = info
+    }
+    ctx.request.body.password = DEFAULT_PASSWORD // 默认密码(不管有没有该用户 都加上 以防报错)
+  } catch (err) {
+    console.error('通过openid查用户失败', err)
+    return ctx.app.emit('error', userLoginError, ctx)
+  }
+  await next()
+}
 
 
 
 
 module.exports = {
   userValidator, verifyUser, verifyLogin, userinfoDBSQL, verifyOldNewPwd,
-  verifyResetPwd, pwdValidator,
+  verifyResetPwd, pwdValidator, wxloginValidator, wxSessionKey, wxGetuserinfo,
 }

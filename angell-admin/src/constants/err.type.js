@@ -10,6 +10,7 @@ module.exports = {
   captchaError: { code: 400, msg: '验证码不正确' },
   userNotError: { code: 400, msg: '用户不存在' },
   userLoginError: { code: 500, msg: '登陆失败' },
+  userLoginCodeError: { code: 400, msg: '无效的code' },
   userPasswordError: { code: 400, msg: '密码错误' },
   userAlreadyExited: { code: 400, msg: '用户已存在' },
   userRegisterError: { code: 500, msg: '注册失败' },

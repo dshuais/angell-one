@@ -1,3 +1,5 @@
+const request = require('request')
+
 
 /**
  * 保留小数点几位数, 自动补零, 四舍五入
@@ -38,6 +40,32 @@ function randomColor(min, max) {
   return `rgb(${r},${g},${b})`
 }
 
+
+/** 封装一个http请求
+ * @param url 请求路径
+ * @param method 请求方式
+ * @param json 请求参数data
+ * @param headers 请求头
+*/
+const http = {
+  async request(url, method, json, headers) {
+    let options = {
+      url, headers, method, json
+    }
+    return new Promise((resolve, reject) => {
+      request(options, (err, res, body) => {
+        if (res.statusCode == 200) {
+          resolve(body)
+        } else {
+          console.error('请求失败了', res.statusCode)
+        }
+      })
+    })
+  }
+}
+
+
 module.exports = {
   myFixed, randomNum, randomColor,
+  http
 }

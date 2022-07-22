@@ -24,7 +24,13 @@ const svgCaptchaConfig = {
   background: randomColor(200, 250), // 验证码的背景颜色
 }
 
+// 微信小程序的appid和appsecret
+const wx = {
+  APP_ID: 'wxd4fce7569cee8d03',
+  APP_SECRET: '297f9f924cf8e12dab209018cfc16332'
+}
+
 
 module.exports = {
-  svgCaptchaConfig, sessionConfig,
+  svgCaptchaConfig, sessionConfig, wx
 }
