@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 const router = new Router() // new Router({prefix: '/user'}) 也可以在这里添加请求头
 const { register, login, userinfo, changePwd, resetPassword, getUserInfo, updateUserInfo, wxLogin,
-  updateAvatar, } = require('../controller/user.controller')
+  updateAvatar, getTokenStatus, } = require('../controller/user.controller')
 const { userValidator, verifyUser, verifyLogin, userinfoDBSQL, verifyOldNewPwd, pwdValidator,
   verifyResetPwd, wxloginValidator, wxSessionKey, wxGetuserinfo, } = require('../middleware/user.middleware'),
   { auth, hadAdminPermission } = require('../middleware/auth.middleware'),
@@ -23,6 +23,8 @@ router.post('/resetpwd', auth, hadAdminPermission, verifyResetPwd, bcryptPasswor
 
 // 微信登陆
 router.post('/wxlogin', wxloginValidator, wxSessionKey, wxGetuserinfo, bcryptPassword, wxLogin)
+// 获取token状态
+router.get('/status', auth, getTokenStatus)
 // 修改头像
 router.post('/avatar', updateAvatar)
 

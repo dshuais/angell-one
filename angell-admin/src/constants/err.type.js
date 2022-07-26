@@ -20,6 +20,8 @@ module.exports = {
   changePwdError: { code: 400, msg: '旧密码错误' },
   equalPwdError: { code: 400, msg: '新密码与旧密码相同' },
   userUpdateError: { code: 500, msg: '修改用户信息失败' },
+  // 图片池相关
+  pictureGetSelectError: { code: 500, msg: '查询失败' },
 
 
 

@@ -124,7 +124,7 @@ class userController {
         const { id, openid, username, status, role } = userinfo
         tokeninfo = { id, openid, username, status, role }
       }
-      const token = jwt.sign(tokeninfo, TOKEN_SECRETKEY, { expiresIn: '10h' }), // 生成token
+      const token = jwt.sign(tokeninfo, TOKEN_SECRETKEY, { expiresIn: '7d' }), // 生成token
         { password: a, ...data } = userinfo // 去除密码
       ctx.body = { code: 200, msg: '登陆成功', data, token }
     } catch (err) {
@@ -135,6 +135,19 @@ class userController {
 
   async updateAvatar(ctx) { // 修改用户头像
     ctx.body = { code: 200, msg: '修改成功' }
+  }
+
+  async getTokenStatus(ctx) { // 用于判断当前用户的token是否有效 有效并更新用户信息
+    try {
+      const res = await getDataInfo3(tablename, { openid: ctx.auth.openid })
+      if (!res[0].length) return ctx.app.emit('error', userNotError, ctx)
+      const { password, ...data } = res[0][0], { id, openid, username, status, role } = data,
+        token = jwt.sign({ id, openid, username, status, role }, TOKEN_SECRETKEY, { expiresIn: '7d' })
+      ctx.body = { code: 200, msg: 'token有效', data, token }
+    } catch (err) {
+      console.log('更新用户信息失败', err)
+      ctx.app.emit('error', tokenOverError, ctx)
+    }
   }
 
 }
