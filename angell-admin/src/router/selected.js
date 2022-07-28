@@ -1,5 +1,7 @@
 const Router = require('koa-router'), router = new Router(),
-  { getTodaySelected, getTodayGuide, getTodaySwiper, getStarMaxUserinfo, getPictureList, } = require('../controller/selected.con')
+  { getTodaySelected, getTodayGuide, getTodaySwiper, getStarMaxUserinfo, getPictureList,
+  } = require('../controller/selected.con'),
+  { getListValidator } = require('../middleware/selected.midd')
 
 
 
@@ -16,7 +18,8 @@ router.get('/swiper', getTodaySwiper)
 router.get('/staruser', getStarMaxUserinfo)
 
 // 精选图片
-router.get('/list', getPictureList)
+router.post('/list', getListValidator, getPictureList)
+
 
 
 module.exports = router

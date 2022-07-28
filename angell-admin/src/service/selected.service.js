@@ -25,6 +25,26 @@ const getStarUserinfo = async _ => {
   return db.query(sql)
 }
 
+
+/**
+ * 查询square精选列表 (这样写是为了可以用来复用查个人列表)
+ * @param where 条件语句 包括分页
+ * @param ORDER 排序规则 通过什么来排序 现在就想了两种 star和update_time
+*/
+const getPictureList = async (where, ORDER = 'star') => {
+  const { pageNum: num, pageSize: size, ...data } = where
+  let sql = `select * from angell_picture `, wherelist = ''
+  if (Object.keys(data).length) {
+    for (let i in data) {
+      wherelist += `and ${i} = ${data[i]}`
+    }
+  }
+  sql += `where status = 0 ${wherelist} order by ${ORDER} desc limit ${size} offset ${(num - 1) * size}`
+  // console.log('当前执行sql', sql)
+  return db.query(sql)
+}
+
+
 module.exports = {
-  getTodaySelect, getNewestSwiper, getStarUserinfo,
+  getTodaySelect, getNewestSwiper, getStarUserinfo, getPictureList,
 }

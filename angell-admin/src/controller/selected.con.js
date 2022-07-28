@@ -1,4 +1,4 @@
-const { getTodaySelect, getNewestSwiper, getStarUserinfo, } = require('../service/selected.service'),
+const { getTodaySelect, getNewestSwiper, getStarUserinfo, getPictureList, } = require('../service/selected.service'),
   { pictureGetSelectError } = require('../constants/err.type'),
   { getDataInfo3 } = require('../service/public.service')
 
@@ -46,8 +46,10 @@ class SelectedController {
   }
 
   async getPictureList(ctx) { // 查询精选的图片列表
+    const { order, ...data } = ctx.request.body
     try {
-      ctx.body = { code: 200, msg: '查询成功' }
+      const res = await getPictureList(data, order)
+      ctx.body = { code: 200, msg: '查询成功', data: res[0] }
     } catch (err) {
       console.error('查询精选列表失败', err)
       ctx.app.emit('error', pictureGetSelectError, ctx)
