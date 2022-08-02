@@ -44,7 +44,13 @@ const getPictureList = async (where, ORDER = 'star') => {
   return db.query(sql)
 }
 
+// 点击star👍 + 1
+const updateStarIncrease = async (id) => {
+  let sql = `update angell_picture set star = star + 1 where id = ${id}`
+  return db.query(sql)
+}
+
 
 module.exports = {
-  getTodaySelect, getNewestSwiper, getStarUserinfo, getPictureList,
+  getTodaySelect, getNewestSwiper, getStarUserinfo, getPictureList, updateStarIncrease,
 }

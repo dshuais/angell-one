@@ -1,6 +1,6 @@
-const { getTodaySelect, getNewestSwiper, getStarUserinfo, getPictureList, } = require('../service/selected.service'),
-  { pictureGetSelectError } = require('../constants/err.type'),
-  { getDataInfo3 } = require('../service/public.service')
+const { getTodaySelect, getNewestSwiper, getStarUserinfo, getPictureList, updateStarIncrease, } = require('../service/selected.service'),
+  { pictureGetSelectError, pictureNotError, pictureStarError, } = require('../constants/err.type'),
+  { getDataInfo3, } = require('../service/public.service')
 
 const tablename = 'angell_picture', tableGuide = 'angell_guide'
 class SelectedController {
@@ -45,6 +45,8 @@ class SelectedController {
     }
   }
 
+
+
   async getPictureList(ctx) { // 查询精选的图片列表
     const { order, ...data } = ctx.request.body
     try {
@@ -53,6 +55,19 @@ class SelectedController {
     } catch (err) {
       console.error('查询精选列表失败', err)
       ctx.app.emit('error', pictureGetSelectError, ctx)
+    }
+  }
+
+  async selectedPicStar(ctx) { // 给图片点star👍
+    const { id } = ctx.request.params
+    try {
+      const res = await getDataInfo3(tablename, { id, status: 0 })
+      if (!res[0].length) return ctx.app.emit('error', pictureNotError, ctx)
+      await updateStarIncrease(id)
+      ctx.body = { code: 200, msg: 'star成功' }
+    } catch (err) {
+      console.error('图片star失败', err)
+      ctx.app.emit('error', pictureStarError, ctx)
     }
   }
 

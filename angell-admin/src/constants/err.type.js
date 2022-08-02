@@ -22,6 +22,8 @@ module.exports = {
   userUpdateError: { code: 500, msg: '修改用户信息失败' },
   // 图片池相关
   pictureGetSelectError: { code: 500, msg: '查询失败' },
+  pictureNotError: { code: 400, msg: '无效的图片id' },
+  pictureStarError: { code: 500, msg: 'star失败' },
 
 
 
