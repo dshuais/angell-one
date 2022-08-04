@@ -378,6 +378,11 @@
   dependencies:
     "assert-plus" "^1.0.0"
 
+"dayjs@^1.11.4":
+  "integrity" "sha512-Zj/lPM5hOvQ1Bf7uAvewDaUcsJoI6JmNqmHhHl3nyumwe0XHwt8sWdOVAPACJzCebL8gQCi+K49w7iKWnGwX9g=="
+  "resolved" "https://registry.npmmirror.com/dayjs/-/dayjs-1.11.4.tgz"
+  "version" "1.11.4"
+
 "debug@^3.1.0":
   "integrity" "sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ=="
   "resolved" "https://registry.npmmirror.com/debug/-/debug-3.2.7.tgz"
@@ -1062,7 +1067,7 @@
     "methods" "^1.1.2"
     "path-to-regexp" "^6.1.0"
 
-"koa-send@^5.0.0":
+"koa-send@^5.0.0", "koa-send@^5.0.1":
   "integrity" "sha512-tmcyQ/wXXuxpDxyNXv5yNNkdAMdFRqwtegBXUaowiQzUKqJehttS0x2j0eOZDQAyloAth5w6wwBImnFzkUz3pQ=="
   "resolved" "https://registry.npmmirror.com/koa-send/-/koa-send-5.0.1.tgz"
   "version" "5.0.1"

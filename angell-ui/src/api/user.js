@@ -25,3 +25,16 @@ export const getUserinfo = () => {
     url: 'api/user/info',
   })
 }
+
+
+export const download = data => {
+  return request({
+    method: 'post',
+    url: 'api/upload/download',
+    data,
+    responseType: 'blob'
+    // headers: {
+    //   'Content-Type': 'multipart/form-data'
+    // }
+  })
+}
