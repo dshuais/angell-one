@@ -26,15 +26,21 @@ export const getUserinfo = () => {
   })
 }
 
-
+// 下载文件
 export const download = data => {
   return request({
     method: 'post',
     url: 'api/upload/download',
     data,
     responseType: 'blob'
-    // headers: {
-    //   'Content-Type': 'multipart/form-data'
-    // }
+  })
+}
+// 批量下载
+export const downloadAll = data => {
+  return request({
+    method: 'post',
+    url: 'api/upload/downloadAll',
+    responseType: 'blob',
+    data
   })
 }

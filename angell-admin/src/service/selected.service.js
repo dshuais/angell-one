@@ -39,7 +39,7 @@ const getPictureList = async (where, ORDER = 'star') => {
       wherelist += `and ${i} = ${data[i]}`
     }
   }
-  sql += `where status = 0 ${wherelist} order by ${ORDER} desc limit ${size} offset ${(num - 1) * size}`
+  sql += `where status = 0 and sea = 0 ${wherelist} order by ${ORDER} desc limit ${size} offset ${(num - 1) * size}`
   // console.log('当前执行sql', sql)
   return db.query(sql)
 }

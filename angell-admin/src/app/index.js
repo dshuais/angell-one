@@ -63,8 +63,8 @@ app.use(KoaBody()) // 解析传参body的中间件 这个中间件可开启上�
 // }))
 
 app.use(historyApiFallback({ whiteList: ['/api'] })) // 必须挂载在暴露静态资源的前面 whiteList白名单 让带了前缀的get请求都不要指向index.html
-app.use(KoaStatic(path.join(__dirname, '../../../uploads'))) // 默认暴露的静态资源
-app.use(KoaStatic(path.join(__dirname, '../../../own.dshuais.com'))) // 默认暴露的静态资源 前端项目
+app.use(KoaStatic(path.join(__dirname, '../../../angellone.uploads'))) // 默认暴露的静态资源
+app.use(KoaStatic(path.join(__dirname, '../../../angellone.dshuais.com'))) // 默认暴露的静态资源 前端项目
 app.use(parameter(app)) // 挂载parameter 表单验证中间件 他会向ctx上添加一个ctx.verifyParams()的方法 在里面进行校验
 
 app.use(router.routes()).use(router.allowedMethods()) // 统一加载接口路由
