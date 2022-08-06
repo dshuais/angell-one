@@ -24,10 +24,13 @@ module.exports = {
   pictureGetSelectError: { code: 500, msg: '查询失败' },
   pictureNotError: { code: 400, msg: '无效的图片id' },
   pictureStarError: { code: 500, msg: 'star失败' },
+  addPictureError: { code: 500, msg: '添加picture失败' },
+  putPictureError: { code: 500, msg: '修改picture失败' },
   // 上传相关
   uploadsFileError: { code: 500, msg: '上传失败' },
   uploadTypeError: { code: 400, msg: '文件类型不符合规范' },
   downloadError: { code: 500, msg: '下载失败' },
+
 
 
 

@@ -3,7 +3,7 @@ const Router = require('koa-router')
 const KoaBody = require('koa-body')
 const { uploadImg, uploadFile, downloadFile, downloadFileAll, } = require('../controller/upload.controller')
 const { auth, hadAdminPermission } = require('../middleware/auth.middleware')
-const { startUpload, dowValid, dowValidList, } = require('../middleware/upload.middleware')
+const { dowValid, dowValidList, } = require('../middleware/upload.middleware')
 const router = new Router(), dayjs = require('dayjs'), dirName = dayjs().format('YYYYMMDD')
 
 

@@ -194,7 +194,7 @@ const getDataLike = async (tablename, likefile, where, files = '*') => {
  * 查询语句 like模糊查询数据 富足的条件查询
  * @param tablename 查询的表名
  * @param data 查询条件 {分页，条件都在里面} 分页加字段的模糊查询
- * @param where 条件语句 万一有判断条件 比如说查询已上架的商品 某条件
+ * @param where 条件语句 万一有判断条件 比如说查询已上架的商品 确定的条件a=1,b=2
  * @param files 查询的字段
  * 
  * 以下代码 实现 select * from koa_goods where id>10 and id<20 and goods_num like '%1%' and goods_name like '%快乐%' limit 10 offset 10 这种sql

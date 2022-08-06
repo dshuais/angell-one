@@ -12,10 +12,11 @@ const validator = async (ctx, data) => {
       const val = dd[d]
       list[d] = {
         type: val[0],
-        required: val[1] ? val[1] : true,
-        max: val[2] ? val[2] : void 0,
-        min: val[3] ? val[3] : void 0
+        required: val[1] ?? true,
+        max: val[2] && (val[0] != 'enum') ? val[2] : void 0,
+        min: val[3] && (val[0] != 'enum') ? val[3] : void 0
       }
+      if (val[0] == 'enum') list[d].values = val[2]
     }
   })
   // console.log(list)

@@ -1,10 +1,6 @@
 const { validator } = require('../constants/validator')
 
 
-const startUpload = async (ctx, next) => {
-  console.log(ctx.request.files)
-  // await next()
-}
 
 const dowValid = async (ctx, next) => { // 验证下载文件时文件名
   const list = [{ downName: ['string'] }], vv = await validator(ctx, list)
@@ -19,5 +15,5 @@ const dowValidList = async (ctx, next) => { // 验证批量下载
 }
 
 module.exports = {
-  startUpload, dowValid, dowValidList,
+  dowValid, dowValidList,
 }
