@@ -4,7 +4,7 @@ const KoaBody = require('koa-body')
 const { uploadImg, uploadFile, downloadFile, downloadFileAll, } = require('../controller/upload.controller')
 const { auth, hadAdminPermission } = require('../middleware/auth.middleware')
 const { dowValid, dowValidList, } = require('../middleware/upload.middleware')
-const router = new Router(), dayjs = require('dayjs'), dirName = dayjs().format('YYYYMMDD')
+const router = new Router(), dayjs = require('dayjs'), dirName = dayjs().format('YYYYMMDD'), curTime = dayjs().format('hhmmss')
 
 
 // 商品相关模块路由

@@ -25,7 +25,10 @@ module.exports = {
   pictureNotError: { code: 400, msg: '无效的图片id' },
   pictureStarError: { code: 500, msg: 'star失败' },
   addPictureError: { code: 500, msg: '添加picture失败' },
+  addFileError: { code: 500, msg: '添加file失败' },
   putPictureError: { code: 500, msg: '修改picture失败' },
+  putFileError: { code: 500, msg: '修改file失败' },
+  removeFileError: { code: 500, msg: '删除file失败' },
   // 上传相关
   uploadsFileError: { code: 500, msg: '上传失败' },
   uploadTypeError: { code: 400, msg: '文件类型不符合规范' },

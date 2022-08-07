@@ -41,7 +41,7 @@ const addData = async (tablename, data, files = '') => {
 /**
  * 删除语句 删除数据
  * @param tablename 要删除数据的表名
- * @param where 删除条件
+ * @param where 删除条件 id=1,a=2
  * 返回值：getSuccess ? 一个对象 对象的第一位的 res[0].affectedRows === 1 说明删除成功 : undefined
 */
 const removeData = async (tablename, where) => {
