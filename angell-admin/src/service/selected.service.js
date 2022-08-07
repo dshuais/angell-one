@@ -36,7 +36,7 @@ const getPictureList = async (where, ORDER = 'star') => {
   let sql = `select * from angell_picture `, wherelist = ''
   if (Object.keys(data).length) {
     for (let i in data) {
-      wherelist += `and ${i} = ${data[i]}`
+      wherelist += `and ${i} like '%${data[i]}%'`
     }
   }
   sql += `where status = 0 and sea = 0 ${wherelist} order by ${ORDER} desc limit ${size} offset ${(num - 1) * size}`

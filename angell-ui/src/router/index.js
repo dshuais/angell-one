@@ -2,6 +2,7 @@ import Layout from '../layout'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
 import List from '../pages/List'
+import MaterialPool from '../pages/MaterialPool'
 import Edit from '../pages/Edit'
 import Means from '../pages/Means'
 import Home from '../pages/Home'
@@ -22,7 +23,7 @@ const routes = [
     children: [
       // { path: '', element: definRouter(<Home />) },
       { path: '', element: <Home /> },
-      { path: 'list', element: <List /> },
+      { path: 'list', element: <MaterialPool /> },
       { path: 'edit', element: <Edit /> },
       { path: 'means', element: <Means /> }
     ]

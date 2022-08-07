@@ -32,7 +32,7 @@ class SeaController {
 
   async updatePicture(ctx) { // 修改图片文件
     try {
-      const { id, userid, url, star, ...data } = ctx.request.body
+      const { id, userid, url, size, star, ...data } = ctx.request.body
       for (let d in data) {
         if (['', null, undefined].includes(data[d])) delete data[d]
       }
@@ -69,7 +69,7 @@ class SeaController {
 
   async updateFile(ctx) { // 修改file
     try {
-      const { id, downUrl, userid, ...data } = ctx.request.body
+      const { id, downUrl, size, userid, ...data } = ctx.request.body
       for (let d in data) {
         if (['', null, undefined].includes(data[d])) delete data[d]
       }

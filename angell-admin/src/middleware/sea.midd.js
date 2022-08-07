@@ -3,7 +3,7 @@ const { validator } = require('../constants/validator')
 // 文件图片海的中间件
 
 const addPictureValid = async (ctx, next) => { // 验证添加图片的中间件
-  const list = [{ url: ['string'] }, { sea: ['enum', true, [0, 1]] }, { status: ['enum', false, [0, 1]] }],
+  const list = [{ url: ['string'] }, { size: ['int'] }, { sea: ['enum', true, [0, 1]] }, { status: ['enum', false, [0, 1]] }],
     vv = await validator(ctx, list)
   if (vv) return ctx.app.emit('error', vv, ctx)
   await next()
@@ -17,7 +17,7 @@ const updatePictureValid = async (ctx, next) => { // 修改图片文件的验证
 }
 
 const addFileValid = async (ctx, next) => { // 添加文件的参数验证
-  const list = [{ name: ['string'] }, { downUrl: ['string'] }, { sea: ['enum', true, [0, 1]] }, { status: ['enum', false, [0, 1]] }],
+  const list = [{ name: ['string'] }, { downUrl: ['string'] }, { size: ['int'] }, { sea: ['enum', true, [0, 1]] }, { status: ['enum', false, [0, 1]] }],
     vv = await validator(ctx, list)
   if (vv) return ctx.app.emit('error', vv, ctx)
   await next()

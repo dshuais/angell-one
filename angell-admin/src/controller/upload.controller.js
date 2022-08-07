@@ -22,7 +22,8 @@ class UploadController {
         }
         data.push({
           name: file.name,
-          url: `${APP_HOST}/img/${file.filepath.replace(/(\S*)img\\/, '')}` // 新的按照图片和文件区分的路径
+          url: `${APP_HOST}/img/${file.filepath.replace(/(\S*)img\\/, '')}`, // 新的按照图片和文件区分的路径
+          size: file.size
         })
       })
       // const url = `${APP_HOST}:${APP_PORT}/${path.basename(file.filepath)}`
@@ -42,7 +43,7 @@ class UploadController {
     if (files) {
       let data = []
       filesConcat(files).forEach(file => {
-        const { name, filepath } = file, // 获取上传的单个文件
+        const { name, filepath, size } = file, // 获取上传的单个文件
           downName = filepath.replace(/(\S*)file\\/, '')
         // if (!fileType.includes(file.mimetype)) { // 判断上传文件类型
         //   return ctx.app.emit('error', uploadTypeError, ctx)
@@ -50,7 +51,8 @@ class UploadController {
         data.push({
           name,
           url: `${APP_HOST}/file/${downName}`, // 新的按照图片和文件区分的路径
-          downName // 上传文件的下载名
+          downName, // 上传文件的下载名
+          size
         })
         // const dirName = dayjs().format('YYYYMMDD'), // 文件夹内按照日期存放图片
         //   dir = path.join(__dirname, `../../../uploads/file/${dirName}`)

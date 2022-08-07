@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { Space, Table, Button, Input, Form, } from 'antd'
-import { getArticleList, removeArticle } from '../../api/article'
 import dayjs from 'dayjs';
 
 export default function List() {
@@ -61,8 +60,6 @@ export default function List() {
   }
 
   const articleDelete = async id => {
-    const res = await removeArticle({ id })
-    console.log(res)
   }
 
 
