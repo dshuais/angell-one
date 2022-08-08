@@ -1,6 +1,6 @@
 const { getTodaySelect, getNewestSwiper, getStarUserinfo, getPictureList, updateStarIncrease, } = require('../service/selected.service'),
   { pictureGetSelectError, pictureNotError, pictureStarError, } = require('../constants/err.type'),
-  { getDataInfo3, } = require('../service/public.service')
+  { getDataInfo3, manyQueryTotal, } = require('../service/public.service')
 
 const tablename = 'angell_picture', tableGuide = 'angell_guide'
 class SelectedController {
@@ -50,8 +50,9 @@ class SelectedController {
   async getPictureList(ctx) { // 查询精选的图片列表
     const { order, ...data } = ctx.request.body
     try {
-      const res = await getPictureList(data, order)
-      ctx.body = { code: 200, msg: '查询成功', data: res[0] }
+      const res = await getPictureList(data, order),
+        total = await manyQueryTotal(tablename, data, 'status = 0,sea = 0')
+      ctx.body = { code: 200, msg: '查询成功', data: res[0], total: total[0][0].total }
     } catch (err) {
       console.error('查询精选列表失败', err)
       ctx.app.emit('error', pictureGetSelectError, ctx)

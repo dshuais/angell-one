@@ -8,3 +8,20 @@ export const getPictureList = data => {
     data
   })
 }
+
+// 精选图片点star
+export const checkPictureStar = id => {
+  return request({
+    method: 'post',
+    url: '/api/selected/star/' + id
+  })
+}
+
+// 添加精选到图片池
+export const AddPictureSea = data => {
+  return request({
+    method: 'post',
+    url: '/api/sea/addPicture',
+    data
+  })
+}

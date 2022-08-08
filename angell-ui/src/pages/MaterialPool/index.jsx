@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import { Space, Table, Button, Input, Form, Radio, Select, Image } from 'antd'
-import dayjs from 'dayjs'
-import { getPictureList } from '../../api/sea'
+import { Space, Table, Button, Input, Form, Radio, Select, Image, Modal, message, Upload, } from 'antd'
+import { SearchOutlined, ReloadOutlined, PlusOutlined, } from '@ant-design/icons'
+import { getPictureList, checkPictureStar, AddPictureSea, } from '../../api/sea'
 import { bytesToSize } from '../../utils'
 import './index.less'
+const { TextArea } = Input
 
 export default function List() {
-  const [data, setData] = useState([
-    { key: 1, id: 1, name: '测试名称', size: 100000, url: 'http://ds.dshuais.com/425708edd0ca6e4610de25b1d.jpg', tag: 1, createTime: '2022-7-16 21:14:30' },
-    { key: 2, id: 2, name: '测试名称3', size: 150000, url: 'http://ds.dshuais.com/425708edd0ca6e4610de25b1d.jpg', tag: 1, createTime: '2022-7-16 21:14:30' },
-  ]),
-    [pagin, setPagin] = useState({ total: 1000, pageNum: 1, pageSize: 10 }),
-    [search, setSearch] = useState({ name: void 0, order: 'star', tag: void 0 })
+  const [searchForm] = Form.useForm(), // 搜索的表单
+    [addPictureForm] = Form.useForm(), // 添加picture的表单
+    [data, setData] = useState([
+      { key: 1, id: 1, name: '测试名称', size: 100000, url: 'http://ds.dshuais.com/425708edd0ca6e4610de25b1d.jpg', tag: 1, createTime: '2022-7-16 21:14:30' },
+      { key: 2, id: 2, name: '测试名称3', size: 150000, url: 'http://ds.dshuais.com/425708edd0ca6e4610de25b1d.jpg', tag: 1, createTime: '2022-7-16 21:14:30' },
+    ]),
+    [pagin, setPagin] = useState({ pageNum: 1, pageSize: 10 }),
+    [total, setTotal] = useState(0), // total跟分页参数分开写 不然会死循环
+    [search, setSearch] = useState({ name: void 0, order: 'star', tag: void 0 }),
+    [iconSpin, setIconSpin] = useState(false), // 重置表单的旋转效果
+    [isModalVisible, setIsModalVisible] = useState(false),
+    [btnLoading, setBtnLoading] = useState(false), // 确认按钮的loading
+    [previewImage, setPreviewImage] = useState(''), // 当前预览的图片
+    [isShowPicture, setIsShowPicture] = useState(false) // 预览图片model的状态
+
 
   const columns = [
     {
@@ -34,6 +44,7 @@ export default function List() {
       title: 'Star',
       dataIndex: 'star',
       align: 'center',
+      sorter: (a, b) => a.star - b.star,
     },
     {
       title: 'Tag',
@@ -74,38 +85,89 @@ export default function List() {
 
   useEffect(() => {
     dataInit()
-  }, [])
+  }, [pagin, search])
 
   // 表格数据 和搜索的事件
-  const dataInit = async (d, pageNum, pageSize) => {
-    setSearch(d)
+  const dataInit = async _ => {
     let dd = {
-      pageNum: pageNum ?? pagin.pageNum,
-      pageSize: pageSize ?? pagin.pageSize,
+      ...pagin,
       ...search
     }
-    const { data } = await getPictureList(dd)
+    // console.log('准备查询', dd)
+    const { data, total } = await getPictureList(dd)
     setData(data)
-    setPagin({ pageNum: dd.pageNum, pageSize: dd.pageSize, total: 100 })
+    setTotal(total)
   }
 
   // star
-  const SelectStar = async id => {
-    console.log(id)
+  const SelectStar = id => {
+    Modal.confirm({
+      title: 'star reminder',
+      content: (
+        <>Are you sure you want to give it a star👍?</>
+      ),
+      async onOk() {
+        await checkPictureStar(id)
+        message.success('star success')
+      }
+    })
   }
 
-  // 分页查询
-  const handlePagin = ({ current: pageNum, pageSize }) => {
-    // console.log({ ...pagin, pageNum, pageSize })
-    // setPagin({ ...pagin, pageNum, pageSize })
-    dataInit({}, pageNum, pageSize)
-    // console.log(pagin)
+  // 上传图片的状态展示 -- 弃用 直接用表单里的值
+  const handleUploadChange = (fileList) => {
+    return
+    console.log(fileList)
+    let list = []
+    fileList.forEach(({ status, response }) => {
+      if (status == 'done') {
+        list.push(...response.data)
+      }
+    })
+    console.log(list)
   }
 
+  // 上传的图片预览
+  const handlePreview = ({ response: { data } }) => {
+    console.log(data)
+    setPreviewImage(data[0].url)
+    setIsShowPicture(true)
+  }
+
+  // 确认提交表单
+  const addPictureFinish = async values => {
+    // console.log(values)
+    setBtnLoading(true)
+    const { url: [{ response: { data: [{ name, url, size }] } }] } = values
+    let dd = {
+      ...values,
+      name: values.name || name.split('.')[0],
+      url,
+      size,
+      sea: 0, status: 0,
+    }
+    // console.log(dd)
+    await AddPictureSea(dd)
+    setIsModalVisible(false)
+    setBtnLoading(false)
+    addPictureForm.resetFields()
+    dataInit()
+    message.success('Uploaded successfully')
+  }
+
+  // 确认添加selected
+  const handleAddSectedOk = () => {
+    setBtnLoading(true)
+    console.log('确认')
+    setTimeout(() => {
+      setBtnLoading(false)
+      setIsModalVisible(false)
+    }, 1000)
+  }
 
   return (
-    <div className='container'>
-      <Form className='flex-a' size='small' onFinish={dataInit} autoComplete="off" initialValues={search}>
+    <div className='container material-pool'>
+      <Form className='flex-a' size='small' onFinish={values => setSearch(values)} autoComplete="off"
+        initialValues={search} form={searchForm}>
         <Form.Item label="Material name" name='name'>
           <Input placeholder="please enter name" className='w-200' allowClear />
         </Form.Item>
@@ -121,15 +183,77 @@ export default function List() {
           </Select>
         </Form.Item>
         <Form.Item>
-          <Button className='submit-btn' type="primary" htmlType="submit" block size='small'>
-            Search
+          <Button className='submit-btn' type="primary" shape="circle" htmlType="submit" block size='small' icon={<SearchOutlined />}>
+            {/* Search */}
           </Button>
+          <Button shape="circle" icon={<ReloadOutlined spin={iconSpin} />} onClick={
+            _ => {
+              setIconSpin(true)
+              searchForm.resetFields()
+              setTimeout(() => {
+                setIconSpin(false)
+                setSearch(search => ({ name: void 0, order: 'star', tag: void 0 }))
+                // setPagin(pagin => ({ pageNum: 1, pageSize: 10 }))
+              }, 1000)
+            }} />
         </Form.Item>
       </Form>
 
-      <Button type="primary" className='float-r mb20' size='small'>Add Picture</Button>
+      <Button type="primary" className='float-r mb20' size='small' onClick={_ => setIsModalVisible(true)}>Add Picture</Button>
 
-      <Table className='mt20' columns={columns} rowKey='id' dataSource={data} pagination={pagin} onChange={handlePagin} />
+      <Table className='mt20' columns={columns} rowKey='id' dataSource={data} pagination={{ ...pagin, total }}
+        onChange={({ current: pageNum, pageSize }) => setPagin({ pageNum, pageSize })} />
+
+      <Modal title="Add featured" visible={isModalVisible} onOk={handleAddSectedOk} onCancel={_ => setIsModalVisible(false)}
+        confirmLoading={btnLoading} width='650px' footer={null}>
+        <Form
+          form={addPictureForm}
+          name="basic"
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 15 }}
+          onFinish={addPictureFinish}
+          autoComplete="off"
+        >
+          <Form.Item label="name" name="name"
+          // rules={[{ required: true, message: 'Please input your name!', }]}
+          >
+            <Input allowClear placeholder='please enter name' />
+          </Form.Item>
+
+          <Form.Item label="Picture" valuePropName="fileList" name='url'
+            rules={[{ required: true, message: 'Please upload picture!', }]} getValueFromEvent={
+              e => {
+                if (Array.isArray(e)) return e
+                return e?.fileList
+              }
+            }>
+            <Upload action={process.env.REACT_APP_BASE_API + '/api/upload/picture'} listType="picture-card"
+              onChange={handleUploadChange} onPreview={handlePreview} maxCount={1}>
+              <PlusOutlined />
+            </Upload>
+          </Form.Item>
+
+          <Form.Item label="Tag" name='tag'>
+            <Select placeholder='please enter Tag' allowClear>
+              <Select.Option value="1">test</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item label="remark" name='remark'>
+            <TextArea rows={3} placeholder='please enter remark' />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={btnLoading}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal visible={isShowPicture} title='预览' footer={null} onCancel={_ => setIsShowPicture(false)}>
+        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+      </Modal>
 
     </div>
   )
