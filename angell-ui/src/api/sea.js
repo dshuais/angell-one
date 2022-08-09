@@ -34,3 +34,12 @@ export const GetUserPictureList = params => {
     params
   })
 }
+
+// 修改picture信息 删除传status为2
+export const putPicture = data => {
+  return request({
+    method: 'put',
+    url: '/api/sea/putPicture',
+    data
+  })
+}

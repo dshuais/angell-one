@@ -47,6 +47,7 @@ service.interceptors.response.use(response => {
     return Promise.reject(new Error(msg || 'Error'))
   } else if ([400, 500].includes(code)) {
     message.error(msg)
+    return Promise.reject(new Error(msg))
   } else if (code !== 200) {
     notification.error({ message: msg })
     return Promise.reject('error')

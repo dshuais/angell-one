@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Space, Table, Button, Input, Form, Image, Select, Radio, } from 'antd'
+import { Space, Table, Button, Input, Form, Image, Select, Radio, Modal, message, } from 'antd'
 import { SearchOutlined, ReloadOutlined, } from '@ant-design/icons'
 import { bytesToSize } from '../../utils'
 import '../MaterialPool/index.less'
 
-import { GetUserPictureList } from '../../api/sea'
+import { GetUserPictureList, putPicture, } from '../../api/sea'
 
 export default function List() {
   const [searchForm] = Form.useForm()
@@ -14,7 +14,8 @@ export default function List() {
   ]),
     [pagin, setPagin] = useState({ pageNum: 1, pageSize: 10 }), // 分页
     [total, setTotal] = useState(100), // 总条数
-    [iconSpin, setIconSpin] = useState(false) // 重置按钮的旋转状态
+    [iconSpin, setIconSpin] = useState(false), // 重置按钮的旋转状态
+    [search, setSearch] = useState({ name: void 0, status: -1, tag: void 0 })
 
   const columns = [
     {
@@ -74,8 +75,8 @@ export default function List() {
       align: 'center',
       render: (text, obj) => (
         <Space size="middle">
-          {/* <Button type='link' size='small' onClick={_ => articleEdit(text)}>Edit</Button> */}
-          {/* <Button type='text' className='c-red' size='small' onClick={_ => SelectStar(text.id)}>👍</Button> */}
+          <Button type='link' size='small' onClick={_ => pictureEdit(text)}>Edit</Button>
+          <Button type='text' className='c-red' size='small' onClick={_ => removePicture(text.id)}>Delete</Button>
         </Space>
       ),
     },
@@ -83,25 +84,55 @@ export default function List() {
 
   useEffect(() => {
     dataInit()
-  }, [pagin])
+  }, [pagin, search])
 
-  const dataInit = async () => {
-    // console.log('查询', pagin.pageNum, pagin.pageSize)
+  // datainit
+  const dataInit = async _ => {
     let dd = {
-      ...pagin
+      ...pagin,
+      ...search
     }
+    if (dd.status == -1) delete dd.status
     const { data, total } = await GetUserPictureList(dd)
+    // console.log(data)
     setData(data)
     setTotal(total)
   }
 
+  // search
+  const handleSearch = (values) => {
+    // console.log(values)
+    setSearch(values)
+  }
+
+  // 分页
   const handlePagin = ({ current: pageNum, pageSize }) => {
     setPagin({ pageNum, pageSize })
   }
 
+  // 修改
+  const pictureEdit = item => {
+    console.log(item)
+  }
+  // 删除
+  const removePicture = id => {
+    // console.log(id)
+    Modal.confirm({
+      title: 'delete reminder',
+      content: (
+        <>ok to delete this picture?</>
+      ),
+      async onOk() {
+        await putPicture({ id, status: 2 })
+        dataInit()
+        message.success('delete success')
+      }
+    })
+  }
+
   return (
     <div className='container material-pool'>
-      <Form className='flex-a' initialValues={{ status: -1 }} size='small' form={searchForm}>
+      <Form className='flex-a' initialValues={search} size='small' form={searchForm} onFinish={handleSearch}>
         <Form.Item label="Material name" name='name'>
           <Input placeholder="please enter name" />
         </Form.Item>
@@ -127,12 +158,14 @@ export default function List() {
               searchForm.resetFields()
               setTimeout(() => {
                 setIconSpin(false)
-                // setSearch(search => ({ name: void 0, order: 'star', tag: void 0 }))
+                setSearch(search => ({ name: void 0, tag: void 0, status: -1 }))
                 // setPagin(pagin => ({ pageNum: 1, pageSize: 10 }))
               }, 1000)
             }} />
         </Form.Item>
       </Form>
+
+      <Button type="primary" className='float-r mb20' size='small'>Add Picture</Button>
 
       <Table className='mt20' rowKey='id' columns={columns} dataSource={data} pagination={{ ...pagin, total }} onChange={handlePagin} />
 
