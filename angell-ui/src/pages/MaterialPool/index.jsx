@@ -109,6 +109,7 @@ export default function List() {
       async onOk() {
         await checkPictureStar(id)
         message.success('star success')
+        dataInit()
       }
     })
   }
@@ -171,16 +172,16 @@ export default function List() {
         <Form.Item label="Material name" name='name'>
           <Input placeholder="please enter name" className='w-200' allowClear />
         </Form.Item>
+        <Form.Item label="Tag" name='tag'>
+          <Select placeholder='please enter Tag' allowClear>
+            <Select.Option value="test">test</Select.Option>
+          </Select>
+        </Form.Item>
         <Form.Item label="Rinking" name='order'>
           <Radio.Group>
             <Radio value="star"> Hot </Radio>
             <Radio value="update_time"> New </Radio>
           </Radio.Group>
-        </Form.Item>
-        <Form.Item label="Tag" name='tag'>
-          <Select placeholder='please enter Tag' allowClear>
-            <Select.Option value="test">test</Select.Option>
-          </Select>
         </Form.Item>
         <Form.Item>
           <Button className='submit-btn' type="primary" shape="circle" htmlType="submit" block size='small' icon={<SearchOutlined />}>

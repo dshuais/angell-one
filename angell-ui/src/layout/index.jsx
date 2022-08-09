@@ -16,7 +16,7 @@ function Layout2(props) {
   const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
-    console.log('将要在这里加载路由')
+    // console.log('将要在这里加载路由 layout页面')
   }, [])
 
   const toggleCollapsed = () => {

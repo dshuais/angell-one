@@ -9,7 +9,7 @@ class SeaController {
   async getPrivatePictureList(ctx) { // 查询个人图片列表
     // console.log(ctx.auth.id, ctx.request.query)
     try {
-      const res = await getLikeDataList(imgTable, ctx.request.query, `userid=${ctx.auth.id},status<>3`),
+      const res = await getLikeDataList(imgTable, ctx.request.query, `userid=${ctx.auth.id},status<>3`, 'update_time'),
         total = await manyQueryTotal(imgTable, ctx.request.query, `userid=${ctx.auth.id},status<>3`)
       ctx.body = { code: 200, msg: '查询成功', data: res[0], total: total[0][0].total }
     } catch (err) {

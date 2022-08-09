@@ -13,7 +13,7 @@ import { codeGitUrl, onLineUrl } from '../../../settings'
 
 export default function Header(props) {
   const navigate = useNavigate(), [screen, setScreen] = useState(false),
-    { user: { username, avatar }, removeInfoAction, collapsed, toggleCollapsed } = props
+    { user: { username, avatar, nickName }, removeInfoAction, collapsed, toggleCollapsed } = props
 
   // menu的回调
   const onClickMenu = ({ key }) => {
@@ -86,9 +86,9 @@ export default function Header(props) {
           src={avatar}
         />
         <Dropdown overlay={menu} placement="bottomRight" trigger={['click']} arrow className='ml10'>
-          <a className='c-333' href='/'>
+          <a className='c-333 ml20' href='/'>
             <Space>
-              {username}
+              {nickName}
               <CaretDownOutlined />
             </Space>
           </a>

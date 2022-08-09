@@ -200,7 +200,7 @@ const getDataLike = async (tablename, likefile, where, files = '*') => {
  * 以下代码 实现 select * from koa_goods where id>10 and id<20 and goods_num like '%1%' and goods_name like '%快乐%' limit 10 offset 10 这种sql
  * 成功返回 [[{},{}]] res内的第一个对象是我们要的数据
 */
-const getLikeDataList = async (tablename, data, where, files = '*') => {
+const getLikeDataList = async (tablename, data, where, sort, files = '*') => {
   let { pageNum: num, pageSize: size } = data, { pageNum, pageSize, ...list } = data,
     sql = `select ${files} from ${tablename}`, whereList = ''
   if (where) {
@@ -217,6 +217,7 @@ const getLikeDataList = async (tablename, data, where, files = '*') => {
     }
   }
   Object.keys(list).length !== 0 || where ? sql = sql.slice(0, sql.lastIndexOf(' and')) : void 0
+  sort && (sql += ` order by ${sort} desc`)
   num && (size ? sql += ` limit ${size} offset ${(num - 1) * size}` : void 0)
   // console.log('sql', sql)
   return await db.query(sql)

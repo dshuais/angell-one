@@ -1,7 +1,7 @@
 import Layout from '../layout'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
-import List from '../pages/List'
+import MaterialList from '../pages/MaterialList'
 import MaterialPool from '../pages/MaterialPool'
 import Edit from '../pages/Edit'
 import Means from '../pages/Means'
@@ -24,7 +24,7 @@ const routes = [
       // { path: '', element: definRouter(<Home />) },
       { path: '', element: <Home /> },
       { path: 'list', element: <MaterialPool /> },
-      { path: 'edit', element: <Edit /> },
+      { path: 'edit', element: <MaterialList /> },
       { path: 'means', element: <Means /> }
     ]
   },

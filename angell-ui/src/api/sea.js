@@ -25,3 +25,12 @@ export const AddPictureSea = data => {
     data
   })
 }
+
+// 获取用户个人图片池
+export const GetUserPictureList = params => {
+  return request({
+    method: 'get',
+    url: '/api/sea/privatePicture',
+    params
+  })
+}

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { download, downloadAll } from '../../api/user'
 
 function Home(props) {
-  const { user: { username } } = props
+  const { user: { username, nickName } } = props
   // console.log(useLocation())
 
   const handelDownload = async () => {
@@ -19,7 +19,7 @@ function Home(props) {
 
   return (
     <div className='container'>
-      name: {username}
+      nickName: {nickName}
       <div>
         <button onClick={handelDownload}>download</button>
         <button onClick={handelDownloadAll}>download all</button>
