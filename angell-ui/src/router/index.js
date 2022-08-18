@@ -1,13 +1,16 @@
 import Layout from '../layout'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
+import Home from '../pages/Home'
 import MaterialList from '../pages/MaterialList'
 import MaterialPool from '../pages/MaterialPool'
-import Edit from '../pages/Edit'
-import Means from '../pages/Means'
-import Home from '../pages/Home'
-import MainRouter from './route'
+import Files from '../pages/Files'
+import Users from '../pages/Users'
+import UserInfo from '../pages/UserInfo'
+import SystemTools from '../pages/SystemTools'
+
 import NotFound from '../pages/404'
+import MainRouter from './route'
 
 function definRouter(route) {
   return (
@@ -23,9 +26,12 @@ const routes = [
     children: [
       // { path: '', element: definRouter(<Home />) },
       { path: '', element: <Home /> },
-      { path: 'list', element: <MaterialPool /> },
-      { path: 'edit', element: <MaterialList /> },
-      { path: 'means', element: <Means /> }
+      { path: 'materialPool', element: <MaterialPool /> },
+      { path: 'materialList', element: <MaterialList /> },
+      { path: 'fileManage', element: <Files /> },
+      { path: 'userManage', element: <Users /> },
+      { path: 'systemTools', element: <SystemTools /> },
+      { path: 'userInfo', element: <UserInfo /> },
     ]
   },
   { path: '/login', element: <Login /> },

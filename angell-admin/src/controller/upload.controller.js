@@ -15,17 +15,28 @@ class UploadController {
      * filepath上传后的新文件名 + 文件所在目录
     */
     if (files) {
-      let data = []
-      filesConcat(files).forEach(file => {
-        if (!fileType.includes(file.mimetype)) { // 判断上传文件类型
-          return ctx.app.emit('error', uploadTypeError, ctx)
-        }
+      let data = [], files2 = filesConcat(files)
+      for (let i = 0; i < files2.length; i++) {
+        const file = files2[i]
+        console.log(fileType.includes(file.mimetype))
+        if (!fileType.includes(file.mimetype)) return ctx.app.emit('error', uploadTypeError, ctx)
         data.push({
           name: file.name,
           url: `${APP_HOST}/img/${file.filepath.replace(/(\S*)img\\/, '')}`, // 新的按照图片和文件区分的路径
           size: file.size
         })
-      })
+      }
+      // 不用forEach遍历因为他不会因为return而停止遍历
+      // filesConcat(files).forEach(file => {
+      //   if (!fileType.includes(file.mimetype)) { // 判断上传文件类型
+      //     return ctx.app.emit('error', uploadTypeError, ctx)
+      //   }
+      //   data.push({
+      //     name: file.name,
+      //     url: `${APP_HOST}/img/${file.filepath.replace(/(\S*)img\\/, '')}`, // 新的按照图片和文件区分的路径
+      //     size: file.size
+      //   })
+      // })
       // const url = `${APP_HOST}:${APP_PORT}/${path.basename(file.filepath)}`
       // const url = `${APP_HOST}/img/${path.basename(file.filepath)}` // 配置了域名就不需要添加端口了 path.basename获取文件名
       // const url = `${APP_HOST}/img/${file.filepath.replace(/(\S*)img\\/, '')}` // 新的按照图片和文件区分的路径
@@ -44,14 +55,14 @@ class UploadController {
       let data = []
       filesConcat(files).forEach(file => {
         const { name, filepath, size } = file, // 获取上传的单个文件
-          downName = filepath.replace(/(\S*)file\\/, '')
+          downUrl = filepath.replace(/(\S*)file\\/, '')
         // if (!fileType.includes(file.mimetype)) { // 判断上传文件类型
         //   return ctx.app.emit('error', uploadTypeError, ctx)
         // }
         data.push({
           name,
-          url: `${APP_HOST}/file/${downName}`, // 新的按照图片和文件区分的路径
-          downName, // 上传文件的下载名
+          url: `${APP_HOST}/file/${downUrl}`, // 新的按照图片和文件区分的路径
+          downUrl, // 上传文件的下载名
           size
         })
         // const dirName = dayjs().format('YYYYMMDD'), // 文件夹内按照日期存放图片
@@ -94,7 +105,7 @@ class UploadController {
   async downloadFileAll(ctx) { // 文件批量下载 打包为zip压缩包
     ctx.request.body.downList.push('angellone.txt')
     try {
-      const { downList } = ctx.request.body, zipName = `${dayjs().format('MMDD')}_${dayjs().format('hhmmss')}_angellone.zip`,
+      const { downList } = ctx.request.body, zipName = `${dayjs().format('MMDD')}_${dayjs().format('HHmmss')}_angellone.zip`,
         root = path.join(__dirname, '../../../angellone.uploads/zip/'),
         readPath = path.join(__dirname, '../../../angellone.uploads/file/'),
         zipStream = fs.createWriteStream(root + zipName), zip = archiver('zip')

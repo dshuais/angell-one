@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Space, Table, Button, Input, Form, Radio, Select, Image, Modal, message, Upload, } from 'antd'
-import { SearchOutlined, ReloadOutlined, PlusOutlined, } from '@ant-design/icons'
+import { Space, Table, Button, Input, Form, Radio, Select, Image, Modal, message, Upload, Tooltip } from 'antd'
+import { SearchOutlined, ReloadOutlined, PlusOutlined, CopyrightOutlined, } from '@ant-design/icons'
+import copy from 'copy-to-clipboard'
 import { getPictureList, checkPictureStar, AddPictureSea, } from '../../api/sea'
 import { bytesToSize } from '../../utils'
 import './index.less'
@@ -9,10 +10,7 @@ const { TextArea } = Input
 export default function List() {
   const [searchForm] = Form.useForm(), // 搜索的表单
     [addPictureForm] = Form.useForm(), // 添加picture的表单
-    [data, setData] = useState([
-      { key: 1, id: 1, name: '测试名称', size: 100000, url: 'http://ds.dshuais.com/425708edd0ca6e4610de25b1d.jpg', tag: 1, createTime: '2022-7-16 21:14:30' },
-      { key: 2, id: 2, name: '测试名称3', size: 150000, url: 'http://ds.dshuais.com/425708edd0ca6e4610de25b1d.jpg', tag: 1, createTime: '2022-7-16 21:14:30' },
-    ]),
+    [data, setData] = useState([]),
     [pagin, setPagin] = useState({ pageNum: 1, pageSize: 10 }),
     [total, setTotal] = useState(0), // total跟分页参数分开写 不然会死循环
     [search, setSearch] = useState({ name: void 0, order: 'star', tag: void 0 }),
@@ -29,6 +27,7 @@ export default function List() {
       dataIndex: 'name',
       key: 'name',
       align: 'center',
+      ellipsis: true
     },
     {
       title: 'Picture',
@@ -41,10 +40,15 @@ export default function List() {
         </>)
     },
     {
-      title: 'Star',
+      title: 'Star⭐',
       dataIndex: 'star',
       align: 'center',
       sorter: (a, b) => a.star - b.star,
+      render: star => (
+        <>
+          {star} ⭐
+        </>
+      )
     },
     {
       title: 'Tag',
@@ -55,6 +59,7 @@ export default function List() {
       title: 'Remark',
       dataIndex: 'remark',
       align: 'center',
+      ellipsis: true
     },
     {
       title: 'Size',
@@ -76,6 +81,12 @@ export default function List() {
       align: 'center',
       render: (text, obj) => (
         <Space size="middle">
+          <Tooltip title="copy url" color='pink'>
+            <Button type='text' size='small' className='c-hpink' onClick={_ => {
+              copy(obj.url)
+              message.success('Copied 🎉') // 😊
+            }}><CopyrightOutlined /></Button>
+          </Tooltip>
           {/* <Button type='link' size='small' onClick={_ => articleEdit(text)}>Edit</Button> */}
           <Button type='text' className='c-red' size='small' onClick={_ => SelectStar(text.id)}>👍</Button>
         </Space>
@@ -124,7 +135,7 @@ export default function List() {
         list.push(...response.data)
       }
     })
-    console.log(list)
+    // console.log(list)
   }
 
   // 上传的图片预览
@@ -157,6 +168,8 @@ export default function List() {
 
   // 确认添加selected
   const handleAddSectedOk = () => {
+    addPictureForm.submit()
+    return
     setBtnLoading(true)
     console.log('确认')
     setTimeout(() => {
@@ -190,7 +203,8 @@ export default function List() {
           <Button shape="circle" icon={<ReloadOutlined spin={iconSpin} />} onClick={
             _ => {
               setIconSpin(true)
-              searchForm.resetFields()
+              searchForm.setFieldsValue({ name: void 0, tag: void 0, order: 'star' })
+              // searchForm.resetFields()
               setTimeout(() => {
                 setIconSpin(false)
                 setSearch(search => ({ name: void 0, order: 'star', tag: void 0 }))
@@ -202,11 +216,11 @@ export default function List() {
 
       <Button type="primary" className='float-r mb20' size='small' onClick={_ => setIsModalVisible(true)}>Add Picture</Button>
 
-      <Table className='mt20' columns={columns} rowKey='id' dataSource={data} pagination={{ ...pagin, total }}
+      <Table size='small' className='mt20' columns={columns} rowKey='id' dataSource={data} pagination={{ ...pagin, total }}
         onChange={({ current: pageNum, pageSize }) => setPagin({ pageNum, pageSize })} />
 
       <Modal title="Add featured" visible={isModalVisible} onOk={handleAddSectedOk} onCancel={_ => setIsModalVisible(false)}
-        confirmLoading={btnLoading} width='650px' footer={null}>
+        confirmLoading={btnLoading} width='650px'>
         <Form
           form={addPictureForm}
           name="basic"
@@ -215,7 +229,7 @@ export default function List() {
           onFinish={addPictureFinish}
           autoComplete="off"
         >
-          <Form.Item label="name" name="name"
+          <Form.Item label="Name" name="name"
           // rules={[{ required: true, message: 'Please input your name!', }]}
           >
             <Input allowClear placeholder='please enter name' />
@@ -226,8 +240,7 @@ export default function List() {
               e => {
                 if (Array.isArray(e)) return e
                 return e?.fileList
-              }
-            }>
+              }}>
             <Upload action={process.env.REACT_APP_BASE_API + '/api/upload/picture'} listType="picture-card"
               onChange={handleUploadChange} onPreview={handlePreview} maxCount={1}>
               <PlusOutlined />
@@ -240,15 +253,15 @@ export default function List() {
             </Select>
           </Form.Item>
 
-          <Form.Item label="remark" name='remark'>
-            <TextArea rows={3} placeholder='please enter remark' />
+          <Form.Item label="Remark" name='remark'>
+            <TextArea rows={3} placeholder='Two sentences, separated by commas' />
           </Form.Item>
 
-          <Form.Item>
+          {/* <Form.Item>
             <Button type="primary" htmlType="submit" loading={btnLoading}>
               Submit
             </Button>
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </Modal>
 

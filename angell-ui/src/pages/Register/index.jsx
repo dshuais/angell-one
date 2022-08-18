@@ -24,7 +24,7 @@ export default function Register() {
   return (
     <div className='container-app'>
       <div className='con-login'>
-        <img src={logo} alt="" />
+        <img className='logo' src={logo} alt="" />
         <Form
           name="basic"
           initialValues={{

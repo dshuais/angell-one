@@ -43,3 +43,30 @@ export const putPicture = data => {
     data
   })
 }
+
+// 查询文件列表
+export const getFilesList = params => {
+  return request({
+    method: 'get',
+    url: '/api/sea/files',
+    params
+  })
+}
+
+// 添加到文件池
+export const addFilesSea = data => {
+  return request({
+    method: 'post',
+    url: '/api/sea/addFile',
+    data
+  })
+}
+
+// 修改私人文件
+export const editPrivateFile = data => {
+  return request({
+    method: 'put',
+    url: '/api/sea/updateFile',
+    data
+  })
+}

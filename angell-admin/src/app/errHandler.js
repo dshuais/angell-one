@@ -5,7 +5,7 @@ module.exports = (err, ctx) => {
      * code统一用400和500就好
      * 状态码就让他走200 前端好处理
     */
-    case 400: case 500:
+    case 400: case 500: case 401: case 404:
       status = 200
       break
     // 下面的不用了 前端不好统一处理

@@ -9,7 +9,7 @@ class SeaController {
   async getPrivatePictureList(ctx) { // 查询个人图片列表
     // console.log(ctx.auth.id, ctx.request.query)
     try {
-      const res = await getLikeDataList(imgTable, ctx.request.query, `userid=${ctx.auth.id},status<>2`, 'update_time'),
+      const res = await getLikeDataList(imgTable, ctx.request.query, `userid=${ctx.auth.id},status<>2`, 'create_time'),
         total = await manyQueryTotal(imgTable, ctx.request.query, `userid=${ctx.auth.id},status<>2`)
       ctx.body = { code: 200, msg: '查询成功', data: res[0], total: total[0][0].total }
     } catch (err) {
@@ -86,9 +86,12 @@ class SeaController {
     try {
       let sql = ''
       const { status, sea, ...data } = ctx.request.query, { id } = ctx.auth
-      if (sea == 0) sql = 'sea=0'
-      else if (sea == 1) sql = `userid=${id},status=${status}`
-      const res = await getLikeDataList(fileTable, data, sql),
+      if (sea == 0) sql = 'sea=0,status=0'
+      else if (sea == 1) {
+        if (status) sql = `userid=${id},status=${status}`
+        else sql = `userid=${id}`
+      }
+      const res = await getLikeDataList(fileTable, data, sql, 'create_time'),
         total = await manyQueryTotal(fileTable, data, sql)
       ctx.body = { code: 200, msg: '查询成功', data: res[0], total: total[0][0].total }
     } catch (err) {

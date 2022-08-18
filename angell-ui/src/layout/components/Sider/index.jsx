@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
-  FrownOutlined,
-  EditOutlined,
-  ReadOutlined,
-  HomeOutlined
+  FrownOutlined, CoffeeOutlined, StarOutlined, HomeOutlined, UsergroupAddOutlined, FileDoneOutlined,
+  RobotOutlined,
 } from '@ant-design/icons'
 import { Menu } from 'antd';
 import logo from '../../../assets/image/umilogo.png'
@@ -22,9 +20,12 @@ export default function Aside(props) {
   }
   const items = [
     getItem('Home', '', <HomeOutlined />),
-    getItem('Article List', 'list', <ReadOutlined />),
-    getItem('Article Edit', 'edit', <EditOutlined />),
-    getItem('Modify Data', 'means', <FrownOutlined />),
+    getItem('Material Pool', 'materialPool', <StarOutlined />),
+    getItem('Material List', 'materialList', <CoffeeOutlined />),
+    getItem('File Manage', 'fileManage', <FileDoneOutlined />),
+    getItem('System Tools', 'systemTools', <RobotOutlined />),
+    getItem('User Manage', 'userManage', <UsergroupAddOutlined />),
+    getItem('User Info', 'userInfo', <FrownOutlined />),
   ]
 
   const { pathname } = useLocation(), navigate = useNavigate(), { collapsed, toggleCollapsed } = props
