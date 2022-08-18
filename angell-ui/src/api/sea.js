@@ -70,3 +70,11 @@ export const editPrivateFile = data => {
     data
   })
 }
+
+// 删除文件
+export const removeFile = id => {
+  return request({
+    method: 'delete',
+    url: `/api/sea/removeFile/${id}`
+  })
+}

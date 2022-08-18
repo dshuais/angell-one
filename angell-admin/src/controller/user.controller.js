@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken')
 const { createUser, getUserInfo, userinfo, updateById } = require('../service/user.service')
 const { userRegisterError, userLoginError, userGetUserInfoError, userNotError, userChangePwdError,
-  userUpdateError, } = require('../constants/err.type')
+  userUpdateError, getUserListError, } = require('../constants/err.type')
 // const { TOKEN_SECRETKEY } = require('../config/config.default')
 const { TOKEN_SECRETKEY } = process.env,
-  { getDataInfo2, addData, updateData, getDataInfo3 } = require('../service/public.service'),
+  { getDataInfo2, addData, updateData, getDataInfo3, getLikeDataList, manyQueryTotal, } = require('../service/public.service'),
   { pinyin } = require('pinyin-pro')
 
 
@@ -147,6 +147,21 @@ class userController {
     } catch (err) {
       console.log('更新用户信息失败', err)
       ctx.app.emit('error', tokenOverError, ctx)
+    }
+  }
+
+  async getUserList(ctx) { // 查询用户列表
+    const { status, gender, ...data } = ctx.request.query
+    let where = ''
+    try {
+      if (status) where += `status=${status},`
+      if (gender) where += `gender=${gender},`
+      const res = await getLikeDataList(tablename, data, where.slice(0, -1), ''),
+        [[{ total }]] = await manyQueryTotal(tablename, data, where.slice(0, -1))
+      ctx.body = { code: 200, msg: '查询成功', data: res[0], total }
+    } catch (err) {
+      console.log('查询用户列表失败', err)
+      ctx.app.emit('error', getUserListError, ctx)
     }
   }
 

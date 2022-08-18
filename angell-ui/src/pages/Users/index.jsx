@@ -1,6 +1,11 @@
 import React from 'react'
 
-export default function Means() {
+
+import { getUserList } from '../../api/user'
+
+export default function UserManage() {
+
+
   return (
     <div className='container'>Means</div>
   )

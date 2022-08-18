@@ -26,3 +26,11 @@ export const getUserinfo = () => {
   })
 }
 
+// 获取用户列表
+export const getUserList = params => {
+  return request({
+    method: 'get',
+    url: '/api/user/userList',
+    params
+  })
+}

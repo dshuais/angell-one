@@ -101,7 +101,7 @@ service.interceptors.response.use(response => {
  * }
 */
 export function download(url, params, filename = 'angell_angellone.zip') {
-  showLoading('下载中...')
+  showLoading('downloading...') // The larger the file, the longer the download time.
   return service.post(url, params, {
     responseType: 'blob',
   }).then(async data => {

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Button, Form, Input, Select, Radio, Table, Space, Tooltip, message, Modal, Upload, Tag, } from 'antd'
 import {
   SearchOutlined, ReloadOutlined, CloudDownloadOutlined, CopyrightOutlined, FileUnknownTwoTone, InboxOutlined,
-  EditOutlined
+  EditOutlined, DeleteOutlined, ExclamationCircleOutlined
 } from '@ant-design/icons'
 import copy from 'copy-to-clipboard'
 import { download } from '../../../utils/request'
 import { bytesToSize } from '../../../utils'
-import { getFilesList, addFilesSea, editPrivateFile } from '../../../api/sea'
+import { getFilesList, addFilesSea, editPrivateFile, removeFile } from '../../../api/sea'
 
 const { Dragger } = Upload, { TextArea } = Input
 
@@ -88,7 +88,7 @@ export default function PrivateFiles() {
       title: 'Action',
       key: 'action',
       align: 'center',
-      width: '170px',
+      width: '200px',
       render: (text, obj) => (
         <Space size="small">
           <Tooltip title="copy online url" color='pink'>
@@ -97,13 +97,16 @@ export default function PrivateFiles() {
               message.success('Copied 😀') // 😊
             }}><CopyrightOutlined /></Button>
           </Tooltip>
-          <Tooltip title="edit picture" color='blue'>
+          <Tooltip title="edit file" color='blue'>
             <Button type='link' size='small' onClick={_ => fileEdit(text)}><EditOutlined /></Button>
           </Tooltip>
           <Tooltip title="download file" color='blue'>
             <Button type='link' onClick={_ => {
               download('/api/upload/download', { downName: obj.downUrl }, obj.downUrl)
             }}><CloudDownloadOutlined /></Button>
+          </Tooltip>
+          <Tooltip title="delete file" color='red'>
+            <Button type='text' className='c-err' size='small' onClick={_ => handleDeleteFile(text)}><DeleteOutlined /></Button>
           </Tooltip>
         </Space>
       )
@@ -173,6 +176,20 @@ export default function PrivateFiles() {
   const handleDownFileAll = _ => {
     if (!selectedRow.length) return message.warning('Please select file 😔')
     download('/api/upload/downloadAll', { downList: selectedRow })
+  }
+
+  // 删除文件
+  const handleDeleteFile = ({ id }) => {
+    Modal.confirm({
+      title: 'delete reminder',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Are you sure you want to delete the file ?',
+      async onOk() {
+        await removeFile(id)
+        message.success('successfully deleted')
+        dataInit()
+      }
+    })
   }
 
   return (

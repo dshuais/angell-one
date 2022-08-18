@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 const router = new Router() // new Router({prefix: '/user'}) 也可以在这里添加请求头
 const { register, login, userinfo, changePwd, resetPassword, getUserInfo, updateUserInfo, wxLogin,
-  updateAvatar, getTokenStatus, } = require('../controller/user.controller')
+  updateAvatar, getTokenStatus, getUserList, } = require('../controller/user.controller')
 const { userValidator, verifyUser, verifyLogin, userinfoDBSQL, verifyOldNewPwd, pwdValidator,
   verifyResetPwd, wxloginValidator, wxSessionKey, wxGetuserinfo, } = require('../middleware/user.middleware'),
   { auth, hadAdminPermission } = require('../middleware/auth.middleware'),
@@ -21,6 +21,10 @@ router.put('/update', auth, updateUserInfo)
 router.post('/resetpwd', auth, hadAdminPermission, verifyResetPwd, bcryptPassword, resetPassword)
 
 
+// 获取用户信息 db+sql -- 弃用 不用管
+router.post('/userinfo', userinfoDBSQL, userinfo)
+
+
 // 微信登陆
 router.post('/wxlogin', wxloginValidator, wxSessionKey, wxGetuserinfo, bcryptPassword, wxLogin)
 // 获取token状态
@@ -29,8 +33,8 @@ router.get('/status', auth, getTokenStatus)
 router.post('/avatar', updateAvatar)
 
 
-// 获取用户信息 db+sql -- 弃用 不用管
-router.post('/userinfo', userinfoDBSQL, userinfo)
+// 获取用户列表
+router.get('/userList', auth, hadAdminPermission, getUserList)
 
 
 module.exports = router
