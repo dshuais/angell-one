@@ -152,7 +152,7 @@ export default function PublicFiles() {
           <Input placeholder='please enter name' allowClear />
         </Form.Item>
         <Form.Item label="Tag" name='tag'>
-          <Select placeholder='please enter Tag' allowClear>
+          <Select placeholder='please select Tag' allowClear>
             <Select.Option value={1}>test</Select.Option>
           </Select>
         </Form.Item>
@@ -210,7 +210,7 @@ export default function PublicFiles() {
             </Dragger>
           </Form.Item>
           <Form.Item label="Tag" name='tag'>
-            <Select placeholder='please enter Tag' allowClear>
+            <Select placeholder='please select Tag' allowClear>
               <Select.Option value={1}>test</Select.Option>
             </Select>
           </Form.Item>

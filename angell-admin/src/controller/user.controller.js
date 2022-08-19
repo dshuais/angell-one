@@ -85,14 +85,18 @@ class userController {
     }
   }
 
-  async updateUserInfo(ctx) { // 修改用户信息
-    // console.log(ctx.request.body, ctx.auth)
-    const { status, role, ...data } = ctx.request.body
+  /**
+   * 修改用户信息接口
+   * 可分为修改头像、修改用户信息、修改用户状态接口使用
+  */
+  async updateUserInfo(ctx) {
+    // 剔除密码、openid、role、id。因为使用set更新 以防前端误修改数据
+    const { password, openid, role, id, ...data } = ctx.request.body // status也可以更改 管理员改 在前端处理吧
     for (let d in data) {
       if (!data[d]) delete data[d]
     }
     try {
-      const res = await updateData(tablename, data, `id=${ctx.auth.id}`)
+      const res = await updateData(tablename, data, `id=${id}`)
       if (res[0].affectedRows === 1) return ctx.body = { code: 200, msg: '更新成功' }
     } catch (err) {
       console.error('修改用户信息失败', err)
@@ -145,7 +149,7 @@ class userController {
         token = jwt.sign({ id, openid, username, status, role }, TOKEN_SECRETKEY, { expiresIn: '7d' })
       ctx.body = { code: 200, msg: 'token有效', data, token }
     } catch (err) {
-      console.log('更新用户信息失败', err)
+      console.error('更新用户信息失败', err)
       ctx.app.emit('error', tokenOverError, ctx)
     }
   }
@@ -160,7 +164,7 @@ class userController {
         [[{ total }]] = await manyQueryTotal(tablename, data, where.slice(0, -1))
       ctx.body = { code: 200, msg: '查询成功', data: res[0], total }
     } catch (err) {
-      console.log('查询用户列表失败', err)
+      console.error('查询用户列表失败', err)
       ctx.app.emit('error', getUserListError, ctx)
     }
   }

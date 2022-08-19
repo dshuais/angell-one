@@ -186,7 +186,7 @@ export default function List() {
           <Input placeholder="please enter name" className='w-200' allowClear />
         </Form.Item>
         <Form.Item label="Tag" name='tag'>
-          <Select placeholder='please enter Tag' allowClear>
+          <Select placeholder='please select Tag' allowClear>
             <Select.Option value="test">test</Select.Option>
           </Select>
         </Form.Item>
@@ -248,7 +248,7 @@ export default function List() {
           </Form.Item>
 
           <Form.Item label="Tag" name='tag'>
-            <Select placeholder='please enter Tag' allowClear>
+            <Select placeholder='please select Tag' allowClear>
               <Select.Option value="1">test</Select.Option>
             </Select>
           </Form.Item>

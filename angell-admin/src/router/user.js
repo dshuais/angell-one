@@ -7,7 +7,7 @@ const { userValidator, verifyUser, verifyLogin, userinfoDBSQL, verifyOldNewPwd, 
   { auth, hadAdminPermission } = require('../middleware/auth.middleware'),
   { bcryptPassword } = require('../middleware/bcrypt')
 
-// 注册
+// 注册 -- 弃用 不在提供注册
 router.post('/register', userValidator, verifyUser, bcryptPassword, register)
 // 登陆
 router.post('/login', userValidator, verifyLogin, login)

@@ -77,6 +77,7 @@ const verifyOldNewPwd = async (ctx, next) => { // 验证密码 old ！= new
     console.error('查询用户失败', err)
     return ctx.app.emit('error', userChangePwdError, ctx)
   }
+  // 用bcrypt.compareSync方法解析密码 1.解析判断旧密码是否正确 2.解析判断新旧密码是否相同
   if (!bcrypt.compareSync(oldPwd, res[0][0].password)) return ctx.app.emit('error', changePwdError, ctx)
   if (bcrypt.compareSync(password, res[0][0].password)) return ctx.app.emit('error', equalPwdError, ctx)
   await next()

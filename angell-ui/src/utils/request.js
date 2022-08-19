@@ -12,7 +12,7 @@ let requestCount = 0 // 请求数 用来控制global-loading
 
 // global-loading的创建与展示
 function showLoading(tip = '加载中') {
-  if (requestCount == 0) {
+  if (requestCount === 0) {
     let dom = document.createElement('div')
     dom.setAttribute('id', 'global-loading')
     document.body.appendChild(dom)
@@ -25,7 +25,7 @@ function showLoading(tip = '加载中') {
 // global-loading的销毁
 function hideLoading() {
   requestCount--
-  if (requestCount == 0) {
+  if (requestCount === 0) {
     document.body.removeChild(document.getElementById('global-loading'))
   }
 }
@@ -101,7 +101,7 @@ service.interceptors.response.use(response => {
  * }
 */
 export function download(url, params, filename = 'angell_angellone.zip') {
-  showLoading('downloading...') // The larger the file, the longer the download time.
+  showLoading('DownLoading... (The larger the file, the longer the download time.)') // The larger the file, the longer the download time.
   return service.post(url, params, {
     responseType: 'blob',
   }).then(async data => {
