@@ -34,3 +34,21 @@ export const getUserList = params => {
     params
   })
 }
+
+// 修改用户信息
+export const editUserInfo = data => {
+  return request({
+    method: 'put',
+    url: '/api/user/update',
+    data
+  })
+}
+
+// 重置密码
+export const resetUserPassword = data => {
+  return request({
+    method: 'post',
+    url: '/api/user/resetpwd',
+    data
+  })
+}

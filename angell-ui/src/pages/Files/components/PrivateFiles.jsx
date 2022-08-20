@@ -230,7 +230,8 @@ export default function PrivateFiles() {
         <Button type="dashed" danger size='small' onClick={handleDownFileAll}>batch <CloudDownloadOutlined /></Button>
       </div>
 
-      <Table rowSelection={filesRowSelection} size='small' rowKey='id' columns={columns} dataSource={list} pagination={{ ...pagin, total }} onChange={({ current: pageNum, pageSize }) => setPagin({ pageNum, pageSize })} />
+      <Table rowSelection={filesRowSelection} size='small' rowKey='id' columns={columns} dataSource={list} pagination={{ ...pagin, total }}
+        onChange={({ current: pageNum, pageSize }) => setPagin({ pageNum, pageSize })} />
 
       <Modal title="Add Public File" visible={isAddFileModal} onOk={_ => fileForm.submit()} onCancel={_ => {
         setIsAddFileModal(false)
@@ -246,7 +247,7 @@ export default function PrivateFiles() {
           <Form.Item label="File" name="url" valuePropName="filesList" getValueFromEvent={e => {
             if (Array.isArray(e)) return e
             return e?.fileList
-          }}>
+          }} rules={[{ required: true, message: 'Please upload the file first' }]}>
             <Dragger {...uploadProps} maxCount={1} fileList={filesList} disabled={editFileId}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />

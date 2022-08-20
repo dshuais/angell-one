@@ -8,7 +8,7 @@ function Home(props) {
 
   return (
     <div className='container'>
-      nickName: {nickName}
+      <span className='fonw-bold fons-20'>{nickName}</span> welcome to angellone
     </div>
   )
 }

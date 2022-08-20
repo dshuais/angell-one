@@ -93,7 +93,7 @@ class userController {
     // 剔除密码、openid、role、id。因为使用set更新 以防前端误修改数据
     const { password, openid, role, id, ...data } = ctx.request.body // status也可以更改 管理员改 在前端处理吧
     for (let d in data) {
-      if (!data[d]) delete data[d]
+      if (!data[d] && data[d] != 0) delete data[d]
     }
     try {
       const res = await updateData(tablename, data, `id=${id}`)

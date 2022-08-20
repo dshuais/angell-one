@@ -194,7 +194,7 @@ export default function PublicFiles() {
           <Form.Item label="File" name="url" valuePropName="fileList" getValueFromEvent={e => {
             if (Array.isArray(e)) return e
             return e?.fileList
-          }}>
+          }} rules={[{ required: true, message: 'Please upload the file first' }]}>
             {/* {
               filesList.length >= 1 ? null : (
                 

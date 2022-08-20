@@ -12,6 +12,9 @@ export default function SystemTools() {
         <TabPane tab="Picture Bed" key="pictureBed">
           <PictureBed />
         </TabPane>
+        <TabPane tab="Compression Tool" key="compressionTool">
+          compressionTool
+        </TabPane>
       </Tabs>
     </div>
   )
