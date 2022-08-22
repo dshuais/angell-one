@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons'
 import { Modal, Upload } from 'antd'
 
 export default function ImageUpload(props) {
-  const { isShowTip, fileType, uploadUrl, isClear } = props
+  const { isShowTip, fileType, uploadUrl, isClear, maxCount = 5 } = props
   const [fileList, setFileList] = useState([]),
     [previewVisible, setPreviewVisible] = useState(false), // 点击预览上传的图片
     [previewTitle, setPreviewTitle] = useState(''), // 预览图片时的弹框标题
@@ -13,6 +13,7 @@ export default function ImageUpload(props) {
   useEffect(() => {
     if (isClear) setFileList([])
   }, [isClear])
+
 
   // 图片上传的钩子 上传中成功失败都走这里
   // 定义了上传列表fileList后必须早onchange内setFilelist插入进去 不然上传无法进行下一步 上传中->上传->成功
@@ -56,10 +57,10 @@ export default function ImageUpload(props) {
             setPreviewVisible(true)
           }}
           onChange={handleChangeUpload}
-          maxCount={5}
+          maxCount={maxCount}
           multiple
         >
-          {fileList.length >= 5 ? null : uploadButton}
+          {fileList.length >= maxCount ? null : uploadButton}
         </Upload>
         {isShowTip ? textTip : void 0}
       </div>

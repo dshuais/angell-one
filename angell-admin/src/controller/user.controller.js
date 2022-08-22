@@ -73,9 +73,9 @@ class userController {
   }
 
   async getUserInfo(ctx) { // 获取用户信息
-    const { id, username } = ctx.auth
+    const { id, openid } = ctx.auth
     try {
-      const res = await getDataInfo2(tablename, { id, username })
+      const res = await getDataInfo2(tablename, { id, openid })
       if (!res || res[0].length <= 0) return ctx.app.emit('error', userNotError, ctx)
       const { password, ...data } = res[0][0] // 剔除密码
       ctx.body = { code: 200, msg: '获取用户信息成功', data }

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Image, Dropdown, Menu, Space, message, Button, Tooltip } from 'antd'
 import {
@@ -15,11 +15,12 @@ export default function Header(props) {
   const navigate = useNavigate(), [screen, setScreen] = useState(false),
     { user: { username, avatar, nickName }, removeInfoAction, collapsed, toggleCollapsed } = props
 
+
   // menu的回调
   const onClickMenu = ({ key }) => {
     switch (key) {
       case 'update':
-        console.log(key)
+        navigate('/userInfo')
         break
       case 'remove':
         message.success('exit successful')
@@ -32,6 +33,7 @@ export default function Header(props) {
     }
   }
 
+  // 全屏和取消全屏
   const handleFullScreen = () => {
     if (!screenfull.isEnabled) return message.warning('Your browser does not support full screen')
     screenfull.toggle()
@@ -49,6 +51,7 @@ export default function Header(props) {
     />
   )
 
+  // git地址和线上地址
   const tarList = [
     { id: 1, title: 'source Adress', icon: <GithubOutlined />, href: codeGitUrl },
     { id: 2, title: 'online Demo', icon: <ChromeOutlined />, href: onLineUrl },

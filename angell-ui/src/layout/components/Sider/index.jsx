@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   FrownOutlined, CoffeeOutlined, StarOutlined, HomeOutlined, UsergroupAddOutlined, FileDoneOutlined,
@@ -31,7 +31,6 @@ export default function Aside(props) {
   const { pathname } = useLocation(), navigate = useNavigate(), { collapsed, toggleCollapsed } = props
 
   useEffect(() => {
-    // console.log(pathname.replace('/', ''))
   }, [pathname])
 
   const onClickMenu = ({ key }) => {
@@ -41,12 +40,13 @@ export default function Aside(props) {
 
   return (
     <div>
-      <div className='logo flex'>
+      <div className='logo flex' onClick={_ => navigate('/')}>
         <img src={logo} alt="" />
       </div>
 
       <Menu
-        defaultSelectedKeys={[pathname.replace('/', '')]}
+        // defaultSelectedKeys={[curSelected]}
+        selectedKeys={[pathname.replace('/', '')]}
         onClick={onClickMenu}
         mode="inline"
         theme="light"

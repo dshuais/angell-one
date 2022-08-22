@@ -12,6 +12,7 @@ export default function Register() {
   const navigate = useNavigate()
 
   const onFinish = async values => {
+    return message.warning('Registration is closed')
     const { username, password } = values
     await userRegister({ username, password })
     message.success('注册成功,3秒后跳转登陆', () => {
@@ -86,7 +87,7 @@ export default function Register() {
 
           <Form.Item>
             <Button type="primary" htmlType="submit" block size='large'>
-              立即注册
+              立即注册(提示：不再支持通过注册功能 创建后台账户！)
             </Button>
           </Form.Item>
         </Form>

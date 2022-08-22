@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { HomeOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'antd';
 
@@ -13,13 +13,15 @@ export default function Bread() {
 
   return (
     <Breadcrumb>
-      <Breadcrumb.Item href='/'>
-        <HomeOutlined />
+      <Breadcrumb.Item>
+        {/* <HomeOutlined /> */}
+        <Link to='/'><HomeOutlined /></Link>
       </Breadcrumb.Item>
       {
         (pathlist.slice(0, pathlist.length - 1)).map(path =>
-        (<Breadcrumb.Item key={path} href={`/${path}`}>
-          <span>{path}</span>
+        (<Breadcrumb.Item key={path}>
+          {/* <span>{path}</span>     href={`/${path}`} */}
+          <Link to={`/${path}`}>{path}</Link>
         </Breadcrumb.Item>)
         )
       }

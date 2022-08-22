@@ -18,11 +18,11 @@ class UploadController {
       let data = [], files2 = filesConcat(files)
       for (let i = 0; i < files2.length; i++) {
         const file = files2[i]
-        console.log(fileType.includes(file.mimetype))
+        // console.log(fileType.includes(file.mimetype))
         if (!fileType.includes(file.mimetype)) return ctx.app.emit('error', uploadTypeError, ctx)
         data.push({
           name: file.name,
-          url: `${APP_HOST}/img/${file.filepath.replace(/(\S*)img\\/, '')}`, // 新的按照图片和文件区分的路径
+          url: `${APP_HOST}/img/${file.filepath.replace(/(\S*)img\//, '')}`, // 新的按照图片和文件区分的路径
           size: file.size
         })
       }

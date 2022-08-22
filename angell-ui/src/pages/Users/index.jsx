@@ -191,7 +191,7 @@ export default function UserManage() {
         setUserInfo({})
       }} confirmLoading={editUserBtnLoad}>
         <Form name="form" size='small' autoComplete="off" form={userForm} labelCol={{ span: 6 }}
-          wrapperCol={{ span: 16 }} initialValues={{ status: 0, sea: 1 }} onFinish={handleEditUserInfo}>
+          wrapperCol={{ span: 16 }} onFinish={handleEditUserInfo}>
           <Form.Item wrapperCol={{ span: 24 }} className='text-c'>
             <Avatar size={60} src={userInfo.avatar} />
           </Form.Item>
@@ -202,7 +202,7 @@ export default function UserManage() {
             <Input placeholder='please enter NickName' allowClear />
           </Form.Item>
           <Form.Item label="PhoneNumber" name="phonenumber">
-            <Input placeholder='please enter PhoneNumber	' allowClear />
+            <Input placeholder='please enter PhoneNumber' allowClear />
           </Form.Item>
           <Form.Item label='Gender' name='gender'>
             <Radio.Group>
