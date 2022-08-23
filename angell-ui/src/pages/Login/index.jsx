@@ -27,7 +27,7 @@ function Login(props) {
       // if (code === 1) return message.error(msg)
       setToken(token)
       message.success('login successful')
-      props.getUserInfo()
+      // props.getUserInfo()
       // setToken(data['cms-token'])
       // props.userInfoAction(data)
       navigate('/')
