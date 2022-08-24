@@ -32,7 +32,7 @@ export default function MainRouter({ children }) {
     currentRoute = currPath(routes).find(route => route.path === pathname)
 
   useEffect(() => {
-    console.log('将要在这里加载路由')
+    // console.log('将要在这里加载路由')
   }, [])
 
   nprogress.start()

@@ -3,7 +3,7 @@ module.exports = {
 
   codeGitUrl: 'https://gitee.com/dushuais/angell-one.git', // 源码地址
 
-  onLineUrl: 'http://ds.dshuais.com', // 在线演示地址
+  onLineUrl: 'https://angellone.dshuais.com', // 在线演示地址
 
   giteeDs: 'https://gitee.com/dushuais', // 作者git地址
 
