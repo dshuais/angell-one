@@ -24,6 +24,7 @@ const userValidator = async (ctx, next) => { // 验证用户输入用户名和�
 }
 
 const verifyLogin = async (ctx, next) => { // 用户登陆的验证中间件
+
   const { username, password, captcha } = ctx.request.body
   if (captcha != ctx.session.captcha) return ctx.app.emit('error', captchaError, ctx)
   let res

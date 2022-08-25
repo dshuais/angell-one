@@ -13,7 +13,7 @@ import { codeGitUrl, onLineUrl } from '../../../settings'
 
 export default function Header(props) {
   const navigate = useNavigate(), [screen, setScreen] = useState(false),
-    { user: { username, avatar, nickName }, removeInfoAction, collapsed, toggleCollapsed } = props
+    { user: { username, avatar, nickName }, removeInfoAction, collapsed, toggleCollapsed, removeMenuAction } = props
 
 
   // menu的回调
@@ -26,6 +26,7 @@ export default function Header(props) {
         message.success('exit successful')
         removeToken()
         removeInfoAction()
+        removeMenuAction()
         navigate('/login', { replace: true })
         break
       default:

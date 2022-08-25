@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
-const { createUser, getUserInfo, userinfo, updateById } = require('../service/user.service')
+const { createUser, getUserInfo, userinfo, updateById, userMenuList, } = require('../service/user.service')
 const { userRegisterError, userLoginError, userGetUserInfoError, userNotError, userChangePwdError,
-  userUpdateError, getUserListError, } = require('../constants/err.type')
+  userUpdateError, getUserListError, getMenuListError, } = require('../constants/err.type')
 // const { TOKEN_SECRETKEY } = require('../config/config.default')
 const { TOKEN_SECRETKEY } = process.env,
   { getDataInfo2, addData, updateData, getDataInfo3, getLikeDataList, manyQueryTotal, } = require('../service/public.service'),
@@ -167,6 +167,17 @@ class userController {
     } catch (err) {
       console.error('查询用户列表失败', err)
       ctx.app.emit('error', getUserListError, ctx)
+    }
+  }
+
+
+  async getUserMenuList(ctx) { // 查询用户的路由权限
+    try {
+      const [data] = await userMenuList(ctx.auth.id)
+      ctx.body = { code: 200, msg: '查询成功', data }
+    } catch (err) {
+      console.error('获取权限路由失败', err)
+      ctx.app.emit('error', getMenuListError, ctx)
     }
   }
 

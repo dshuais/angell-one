@@ -5,7 +5,7 @@ import 'nprogress/nprogress.css'
 import routes from '..'
 import { getToken, removeToken } from '../../utils/auth'
 import { local } from '../../utils/cache'
-import { DS_REACT_USERINFO } from '../../redux/constant'
+import { DS_REACT_USERINFO } from '../../settings'
 
 function currPath(routes, lastRoute = false) {
   const routess = JSON.parse(JSON.stringify(routes))

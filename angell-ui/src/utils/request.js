@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver'
 import dayjs from 'dayjs'
 import { getToken, removeToken } from '../utils/auth'
 import { local } from '../utils/cache'
-import { DS_REACT_USERINFO } from '../redux/constant'
+import { DS_REACT_USERINFO } from '../settings'
 
 let requestCount = 0 // 请求数 用来控制global-loading
 

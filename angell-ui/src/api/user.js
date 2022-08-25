@@ -52,3 +52,11 @@ export const resetUserPassword = data => {
     data
   })
 }
+
+// 获取用户路由信息
+export const getUserMenuList = _ => {
+  return request({
+    method: 'get',
+    url: '/api/menu/list'
+  })
+}

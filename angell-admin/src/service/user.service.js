@@ -46,6 +46,13 @@ class UserService {
     return res.length > 0 ? res[0] : void 0
   }
 
+  async userMenuList(id) { // 查询用户的路由权限
+    let sql = `select t4.* from angell_users t1 inner join angell_user_role t2 on t1.id = t2.id
+      inner join angell_role_menu t3 on t2.rid = t3.rid inner join angell_menu t4 on t3.menu_id = t4.menu_id
+      where t1.id = ${id}`
+    return await db.query(sql)
+  }
+
 }
 
 module.exports = new UserService()

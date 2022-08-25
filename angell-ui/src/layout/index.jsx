@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { removeInfoAction, getUserInfo } from '../redux/actions/user'
+import { getMenuAction, removeMenuAction } from '../redux/actions/permission'
 import { Layout } from 'antd'
 import Footer from './components/Footer'
 import Header from './components/Header'
@@ -11,13 +12,14 @@ import './index.less'
 const { Sider, Content } = Layout
 
 function Layout2(props) {
-  const { user, removeInfoAction, getUserInfo } = props
+  const { user, removeInfoAction, getUserInfo, getMenuAction, removeMenuAction } = props
 
   const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
-    // console.log('将要在这里加载路由 layout页面')
+    console.log('将要在这里加载路由 layout页面')
     getUserInfo() // 每次刷新 从新render就从新拉取userinfo
+    getMenuAction() // 获取路由信息
   }, [])
 
   const toggleCollapsed = () => {
@@ -29,7 +31,10 @@ function Layout2(props) {
       <Layout>
         <Sider trigger={null} collapsible collapsed={collapsed}><Aside collapsed={collapsed} toggleCollapsed={toggleCollapsed} /></Sider>
         <Layout>
-          <header className='flex'><Header user={user} removeInfoAction={removeInfoAction} collapsed={collapsed} toggleCollapsed={toggleCollapsed} /></header>
+          <header className='flex'>
+            <Header user={user} removeInfoAction={removeInfoAction} collapsed={collapsed} toggleCollapsed={toggleCollapsed}
+              removeMenuAction={removeMenuAction} />
+          </header>
           <Content>
             <Outlet />
           </Content>
@@ -44,7 +49,9 @@ export default connect(
   state => ({ user: state.user }),
   {
     removeInfoAction,
-    getUserInfo
+    getUserInfo,
+    getMenuAction,
+    removeMenuAction
   }
 )(Layout2)
 

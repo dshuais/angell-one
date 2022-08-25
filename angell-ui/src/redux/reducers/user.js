@@ -1,5 +1,6 @@
 import { local } from '../../utils/cache'
-import { UPDATE_USERINFO, DS_REACT_USERINFO, REMOVE_USERINFO } from '../constant'
+import { UPDATE_USERINFO, REMOVE_USERINFO } from '../constant'
+import { DS_REACT_USERINFO } from '../../settings'
 
 const initState = local.getJSON(DS_REACT_USERINFO) || {}
 export default function userReducers(preState = initState, action) {
@@ -10,7 +11,7 @@ export default function userReducers(preState = initState, action) {
       return data
     case REMOVE_USERINFO:
       local.remove(DS_REACT_USERINFO)
-      return preState // 必须返回不然会报错 哪怕是默认值{}
+      return {} // 必须返回不然会报错 哪怕是默认值{}
     default:
       return preState
   }
