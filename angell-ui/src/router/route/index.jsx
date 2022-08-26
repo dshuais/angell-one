@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Routes, Navigate, useLocation, BrowserRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 import routes from '..'
@@ -27,13 +28,18 @@ function currPath(routes, lastRoute = false) {
   return children
 }
 
-export default function MainRouter({ children }) {
+function MainRouter({ children, menu }) {
+  // routes[0].children = menu
   const whiteRoute = ['/login', '/register'], { pathname } = useLocation(),
+    // currentRoute = currPath(routes).find(route => route.path === pathname)
     currentRoute = currPath(routes).find(route => route.path === pathname)
+  // console.log(currPath(menu))
 
   useEffect(() => {
-    // console.log('将要在这里加载路由')
-  }, [])
+    // console.log('将要在这里加载路由', menu)
+    // routes[0].children = menu
+  }, [menu])
+
 
   nprogress.start()
 
@@ -87,3 +93,8 @@ function MR(props) {
     </div>
   )
 }
+
+// 在router鉴权组件内使用redux
+export default connect(
+  state => ({ menu: state.permission })
+)(MainRouter)

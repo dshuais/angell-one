@@ -12,12 +12,12 @@ import './index.less'
 const { Sider, Content } = Layout
 
 function Layout2(props) {
-  const { user, removeInfoAction, getUserInfo, getMenuAction, removeMenuAction } = props
+  const { user, removeInfoAction, getUserInfo, getMenuAction, removeMenuAction, menu } = props
 
   const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
-    console.log('将要在这里加载路由 layout页面')
+    // console.log('将要在这里加载路由 layout页面', menu)
     getUserInfo() // 每次刷新 从新render就从新拉取userinfo
     getMenuAction() // 获取路由信息
   }, [])
@@ -29,7 +29,9 @@ function Layout2(props) {
   return (
     <Fragment>
       <Layout>
-        <Sider trigger={null} collapsible collapsed={collapsed}><Aside collapsed={collapsed} toggleCollapsed={toggleCollapsed} /></Sider>
+        <Sider trigger={null} collapsible collapsed={collapsed}>
+          <Aside menu={menu} />
+        </Sider>
         <Layout>
           <header className='flex'>
             <Header user={user} removeInfoAction={removeInfoAction} collapsed={collapsed} toggleCollapsed={toggleCollapsed}
@@ -46,7 +48,7 @@ function Layout2(props) {
 }
 
 export default connect(
-  state => ({ user: state.user }),
+  state => ({ user: state.user, menu: state.permission }),
   {
     removeInfoAction,
     getUserInfo,
