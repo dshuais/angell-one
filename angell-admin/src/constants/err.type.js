@@ -35,7 +35,11 @@ module.exports = {
   uploadsFileError: { code: 500, msg: '上传失败' },
   uploadTypeError: { code: 400, msg: '文件类型不符合规范' },
   downloadError: { code: 500, msg: '下载失败' },
-
+  // 反馈信息
+  addFeedbackError: { code: 500, msg: '反馈失败' },
+  getFeedbackError: { code: 500, msg: '查询反馈列表失败' },
+  updateFeedbackError: { code: 500, msg: '修改反馈数据失败' },
+  deleteFeedbackError: { code: 500, msg: '删除反馈数据失败' },
 
 
 

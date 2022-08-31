@@ -12,7 +12,9 @@ module.exports = {
 
   TOKENKEY: 'angellone_react_template_token', // 存在cookie的tokenkey
 
-  DS_REACT_USERINFO: 'angellone_react_userinfo' // 用户信息 存在本地的key
+  DS_REACT_USERINFO: 'angellone_react_userinfo', // 用户信息 存在本地的key
+
+  ANGELLONE_MENU: 'angellone_permiss_menu', // 动态路由的key
 
 
 

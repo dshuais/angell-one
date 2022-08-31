@@ -46,8 +46,8 @@ export default function Header(props) {
     <Menu
       onClick={onClickMenu}
       items={[
-        { key: 'update', label: '修改资料' },
-        { key: 'remove', label: '退出登录' }
+        { key: 'update', label: 'Modify Data' },
+        { key: 'remove', label: 'Sign Out' }
       ]}
     />
   )

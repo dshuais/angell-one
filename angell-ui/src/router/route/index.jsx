@@ -29,13 +29,14 @@ function currPath(routes, lastRoute = false) {
 }
 
 function MainRouter({ children, menu }) {
-  // routes[0].children = menu
   const whiteRoute = ['/login', '/register'], { pathname } = useLocation(),
     // currentRoute = currPath(routes).find(route => route.path === pathname)
-    currentRoute = currPath(routes).find(route => route.path === pathname)
-  // console.log(currPath(menu))
-
+    currentRoute = currPath(routes).find(route => route.path === pathname) // 当前全部路由是否存在
+  // console.log(currPath(routes))
+  const permissionRoute = menu.find(route => route.path === pathname.slice(1)) // 当前动态路由是否存在
+  // console.log('有这个路由', currentRoute, '动态的', permissionRoute)
   useEffect(() => {
+    // if (menu.length) console.log(menu)
     // console.log('将要在这里加载路由', menu)
     // routes[0].children = menu
   }, [menu])
@@ -44,12 +45,15 @@ function MainRouter({ children, menu }) {
   nprogress.start()
 
   if (getToken()) {
-    if (pathname === '/login') {
+    if (whiteRoute.includes(pathname)) { // pathname === '/login'
       // return <Route path='/' element={<Navigate to='/' />} />
       nprogress.done()
       return <Navigate to='/' />
     } else {
-      if (currentRoute) {
+      if (['/', '/404'].includes(pathname)) {
+        nprogress.done()
+        return children
+      } else if (currentRoute && permissionRoute) { //  && permissionRoute
         nprogress.done()
         return children
       } else {
