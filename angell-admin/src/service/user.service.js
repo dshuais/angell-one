@@ -53,6 +53,11 @@ class UserService {
     return await db.query(sql)
   }
 
+  async userRole(id) { // 查询用户的身份 判断权限
+    let sql = `select t2.roleName from angell_user_role t1 inner join angell_role t2 on t1.rid = t2.rid where t1.id = ${id}`
+    return await db.query(sql)
+  }
+
 }
 
 module.exports = new UserService()

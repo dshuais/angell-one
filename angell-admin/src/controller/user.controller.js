@@ -124,8 +124,11 @@ class userController {
           res = await addData(tablename, { ...userinfo, username: name, password })
         if (res[0].affectedRows != 1) return ctx.app.emit('error', userLoginError, ctx)
 
-        const info = await getDataInfo3(tablename, { openid: userinfo.openid })
-        userinfo = info[0][0]
+        const [[info]] = await getDataInfo3(tablename, { openid: userinfo.openid })
+        const [res2] = await addData('angell_user_role', { id: info.id, rid: 2 })
+        console.log('添加的用户权限', res2)
+
+        userinfo = info
         const { id, openid, username, status, role } = userinfo
         tokeninfo = { id, openid, username, status, role }
       }
