@@ -54,7 +54,7 @@ class UploadController {
     if (files) {
       let data = []
       filesConcat(files).forEach(file => {
-        const { name, filepath, size } = file, // 获取上传的单个文件
+        const { name, filepath, size, mimetype } = file, // 获取上传的单个文件
           downUrl = filepath.replace(/(\S*)file\\/, '')
         // if (!fileType.includes(file.mimetype)) { // 判断上传文件类型
         //   return ctx.app.emit('error', uploadTypeError, ctx)
