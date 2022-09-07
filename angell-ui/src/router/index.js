@@ -8,6 +8,7 @@ import Files from '../pages/Files'
 import Users from '../pages/Users'
 import UserInfo from '../pages/UserInfo'
 import SystemTools from '../pages/SystemTools'
+import Feedback from '../pages/Feedback'
 
 import NotFound from '../pages/404'
 import MainRouter from './route'
@@ -32,6 +33,7 @@ const routes = [
       { path: 'userManage', element: <Users /> },
       { path: 'systemTools', element: <SystemTools /> },
       { path: 'userInfo', element: <UserInfo /> },
+      { path: 'feedback', element: <Feedback /> },
     ]
   },
   { path: '/login', element: <Login /> },

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   FrownOutlined, CoffeeOutlined, StarOutlined, HomeOutlined, UsergroupAddOutlined, FileDoneOutlined,
-  RobotOutlined,
+  RobotOutlined, GlobalOutlined,
 } from '@ant-design/icons'
 import { Menu } from 'antd';
 import logo from '../../../assets/image/umilogo.png'
@@ -41,14 +41,15 @@ export default function Aside(props) {
     })
     setItems(items)
   }
-  const icon = { // 本办法 反正自己用
+  const icon = { // 笨办法 反正自己用
     'HomeOutlined': <HomeOutlined />,
     'StarOutlined': <StarOutlined />,
     'CoffeeOutlined': <CoffeeOutlined />,
     'FileDoneOutlined': <FileDoneOutlined />,
     'RobotOutlined': <RobotOutlined />,
     'UsergroupAddOutlined': <UsergroupAddOutlined />,
-    'FrownOutlined': <FrownOutlined />
+    'FrownOutlined': <FrownOutlined />,
+    'GlobalOutlined': <GlobalOutlined />,
   }
 
 
