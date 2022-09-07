@@ -3,8 +3,8 @@ import {
   Button, Form, Input, Select, Radio, Table, Space, Tooltip, message, Modal, Upload, Tag, Avatar, Image,
   Switch,
 } from 'antd'
-import { SearchOutlined, ReloadOutlined, EditOutlined, UnlockOutlined, } from '@ant-design/icons'
-import { getFeedbackList } from '../../api/feedback'
+import { SearchOutlined, ReloadOutlined, DeleteOutlined, } from '@ant-design/icons'
+import { getFeedbackList, updateFeedback } from '../../api/feedback'
 
 
 export default function UserManage() {
@@ -70,6 +70,19 @@ export default function UserManage() {
       align: 'center',
       width: '110px',
     },
+    {
+      title: 'Action',
+      align: 'center',
+      width: '110px',
+      render: (text, obj) => (
+        <Space size="middle">
+          <Tooltip title={obj.status === 0 ? 'close feedback' : 'closed'} color='pink'>
+            <Button type='text' size='small' className='c-hpink' disabled={obj.status === 1}
+              onClick={_ => updateFeedbackData(obj)}><DeleteOutlined /></Button>
+          </Tooltip>
+        </Space>
+      )
+    },
   ]
 
   useEffect(_ => {
@@ -81,6 +94,25 @@ export default function UserManage() {
     const { data, total } = await getFeedbackList({ ...pagin, ...search })
     setList(data)
     setTotal(total)
+  }
+
+  // 关闭该反馈
+  const updateFeedbackData = async ({ id, status }) => {
+    Modal.confirm({
+      title: 'close prompt',
+      content: (
+        <>Are you sure you want to close this feedback ?</>
+      ),
+      async onOk() {
+        await updateFeedback({
+          id, status: 1
+        })
+        message.success('Closed successfully')
+        dataInit()
+      }
+    })
+
+    // updateFeedback
   }
 
 

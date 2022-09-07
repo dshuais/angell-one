@@ -9,3 +9,12 @@ export const getFeedbackList = params => {
     params
   })
 }
+
+// 修改反馈列表 --- 关闭反馈
+export const updateFeedback = data => {
+  return request({
+    method: 'put',
+    url: '/api/feedback/update',
+    data
+  })
+}
