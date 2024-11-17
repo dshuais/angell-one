@@ -4,7 +4,7 @@ const KoaBody = require('koa-body')
 const { uploadImg, uploadFile, downloadFile, downloadFileAll, } = require('../controller/upload.controller')
 const { auth, hadAdminPermission } = require('../middleware/auth.middleware')
 const { dowValid, dowValidList, } = require('../middleware/upload.middleware')
-const router = new Router(), dayjs = require('dayjs'), dirName = dayjs().format('YYYYMMDD'), curTime = dayjs().format('hhmmss')
+const router = new Router(), dayjs = require('dayjs'), curTime = dayjs().format('hhmmss')
 
 
 // 商品相关模块路由
@@ -19,7 +19,8 @@ router.post('/picture', KoaBody({ // 把开启上传中间件放在路由上 解
       // console.log('进入了重命名', name)
       // console.log('进入了重命名2', file)
       // const dirName = dayjs().format('YYYYMMDD') // 文件夹内按照日期存放图片
-      const dir = path.join(__dirname, `../../../angellone.uploads/img/${dirName}`)
+      const dirName = dayjs().format('YYYYMMDD'),
+        dir = path.join(__dirname, `../../../angellone.uploads/img/${dirName}`)
       if (!fs.existsSync(dir)) fs.mkdirSync(dir)
       //  + '_' + (Date.now() + '').slice(-6)
       const filename = file.originalFilename.replaceAll(' ', '_').replace(/[`~!@#$%^&*()|\-=?;:'",<>\{\}\\\/]/gi, '_')
@@ -42,7 +43,8 @@ router.post('/file', KoaBody({
       // console.log('进入了重命名', name)
       // console.log('进入了重命名2', file)
       // const dirName = dayjs().format('YYYYMMDD') // 文件夹内按照日期存放图片
-      const dir = path.join(__dirname, `../../../angellone.uploads/file/${dirName}`)
+      const dirName = dayjs().format('YYYYMMDD'),
+        dir = path.join(__dirname, `../../../angellone.uploads/file/${dirName}`)
       if (!fs.existsSync(dir)) fs.mkdirSync(dir)
       const filename = file.originalFilename.replaceAll(' ', '_').replace(/[`~!@#$%^&*()|\-=?;:'",<>\{\}\\\/]/gi, '_')
       file.name = filename
